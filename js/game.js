@@ -22,6 +22,7 @@ var menuImage;
 
 function loadAssets () {
 
+
   // Background image
   bgImage = new Image();
   bgImage.onload = function () {
