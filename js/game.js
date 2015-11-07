@@ -1,8 +1,8 @@
 // Create the canvas
 var canvas = document.createElement("canvas");
 var ctx = canvas.getContext("2d");
-canvas.width = 512;
-canvas.height = 480;
+canvas.width = 750;
+canvas.height = 445;
 document.body.appendChild(canvas);
 
 //===================================
@@ -28,14 +28,14 @@ function loadAssets () {
   bgImage.onload = function () {
   	bgReady = true;
   };
-  bgImage.src = "assets/images/background.png";
+  bgImage.src = "assets/images/battlefield.png";
   
   // Menu image
   menuImage = new Image();
   menuImage.onload = function () {
   	menuReady = true;
   };
-  menuImage.src = "assets/images/menu.png";
+  menuImage.src = "assets/images/battlefield.png";
   
   addEventListener("keydown", function (e) {
   	keysDown[e.keyCode] = true;
@@ -174,8 +174,6 @@ function heroObject () {
 var initialize = function () {
         resetGame();
         hero = new heroObject();
-        var timer = setInterval(function(){
-          time--;
 };
 
 var resetGame = function () {
