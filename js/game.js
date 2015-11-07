@@ -14,6 +14,8 @@ var bgReady = false;
 var menuReady = false;
 var bgImage;
 var menuImage;
+var heroes = [];
+var monsters = [];
 //===================================
 // GAME - SETUP/UPDATE/RENDER
 //===================================
@@ -89,6 +91,10 @@ function renderGame () {
 		ctx.drawImage(bgImage, 0, 0);
 	}
 
+        for (var i = 0; i < heroes.length; i++){
+          heroes[i].render;
+        }
+
 };
 
 //===================================
@@ -152,10 +158,10 @@ function heroObject () {
 
   // Create Hero sprite object
   sprite.call(this, {
-    ticksPerFrame: 16,
-    numberOfFrames: 2,
+    ticksPerFrame: 0,
+    numberOfFrames: 1,
     context: canvas.getContext("2d"),
-    width: 88,
+    width: 44,
     height: 44,
     image: heroImage
   });
@@ -174,6 +180,7 @@ function heroObject () {
 var initialize = function () {
         resetGame();
         hero = new heroObject();
+        heroes.push(hero);
 };
 
 var resetGame = function () {
