@@ -138,6 +138,7 @@ function sprite (options) {
     // Draw the animation
     this.context.drawImage(
       this.image,
+      this.frameIndex * this.width / this.numberOfFrames,
       0,
       this.width / this.numberOfFrames,
       this.height,
