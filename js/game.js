@@ -1,3 +1,4 @@
+
 // Create the canvas
 var canvas = document.createElement("canvas");
 var ctx = canvas.getContext("2d");
@@ -91,9 +92,9 @@ function renderGame () {
 		ctx.drawImage(bgImage, 0, 0);
 	}
 
-        for (var i = 0; i < heroes.length; i++){
-          heroes[i].render;
-        }
+    for (var i = 0; i < heroes.length; i++){
+      heroes[i].render();
+    }
 
 };
 
@@ -138,23 +139,24 @@ function sprite (options) {
     // Draw the animation
     this.context.drawImage(
       this.image,
-      this.frameIndex * this.width / this.numberOfFrames,
       0,
-      this.width / this.numberOfFrames,
-      this.height,
-      this.x,
-      this.y,
-      44,
-      44);
+      0,
+      30,
+      30,
+      0,
+      100,
+      75,
+      75
+      );
   };
 
   return this;
 }
 
-function heroObject () {
+function heroObject(heroClass) {
   // Create sprite sheet
   var heroImage = new Image();
-  heroImage.src = "assets/images/herospritesheet.png"
+  heroImage.src = "assets/images/warrior_idle.png";
 
   // Create Hero sprite object
   sprite.call(this, {
@@ -166,7 +168,10 @@ function heroObject () {
     image: heroImage
   });
   // Add hero-like attributes
+  
   this.health = 100;
+  this.class = heroClass;
+  this.state = "idle";
   this.x = canvas.width / 2;
   this.y = canvas.height / 2;
   
@@ -179,7 +184,7 @@ function heroObject () {
 
 var initialize = function () {
         resetGame();
-        hero = new heroObject();
+        hero = new heroObject("warrior");
         heroes.push(hero);
 };
 
