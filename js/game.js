@@ -16,6 +16,8 @@ var bgImage;
 var menuImage;
 var heroes = [];
 var monsters = [];
+
+
 //===================================
 // GAME - SETUP/UPDATE/RENDER
 //===================================
@@ -155,7 +157,7 @@ function sprite (options) {
 function heroObject(heroClass) {
   // Create sprite sheet
   var heroImage = new Image();
-  heroImage.src = "assets/images/warrior_idle.png"
+  heroImage.src = heroClass.img;
 
   // Create Hero sprite object
   sprite.call(this, {
@@ -168,10 +170,11 @@ function heroObject(heroClass) {
   });
   // Add hero-like attributes
   
-  this.health = 100;
+  this.health = heroClass.health;
+  this.attack = heroClass.attack;
   this.x = 0;
   this.y = 100 + heroes.length * 80;
-  this.heroClass = heroClass;
+  this.heroClass = heroClass.class;
   this.state = "idle";
   
   return this;
@@ -183,8 +186,11 @@ function heroObject(heroClass) {
 
 var initialize = function () {
         resetGame();
-        hero = new heroObject("warrior");
+        var hero;
+    for(var i=0;i<heroClasses.length;i++){  
+        hero = new heroObject(heroClasses[i]);
         heroes.push(hero);
+    }
 };
 
 var resetGame = function () {
