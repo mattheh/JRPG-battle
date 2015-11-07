@@ -91,9 +91,6 @@ function renderGame () {
 		ctx.drawImage(bgImage, 0, 0);
 	}
 
-        for (var i = 0; i < heroes.length; i++){
-          heroes[i].render;
-        }
 
 };
 
@@ -144,8 +141,9 @@ function sprite (options) {
       this.height,
       this.x,
       this.y,
-      44,
-      44);
+      75,
+      75
+      );
   };
 
   return this;
@@ -154,7 +152,7 @@ function sprite (options) {
 function heroObject () {
   // Create sprite sheet
   var heroImage = new Image();
-  heroImage.src = "assets/images/herospritesheet.png"
+  heroImage.src = "assets/images/warrior_idle.png"
 
   // Create Hero sprite object
   sprite.call(this, {
@@ -167,8 +165,8 @@ function heroObject () {
   });
   // Add hero-like attributes
   this.health = 100;
-  this.x = canvas.width / 2;
-  this.y = canvas.height / 2;
+  this.x = 0;
+  this.y = 100 + heroes.length * 80;
   
   return this;
 }
@@ -211,6 +209,10 @@ var gameLoop = function () {
 	var delta = now - then;
 	updateGame(delta / 1000);
 	renderGame();
+
+        for (var i = 0; i < heroes.length; i++){
+          heroes[i].render();
+        }
 
 	then = now;
 
