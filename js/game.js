@@ -121,9 +121,15 @@ function updateCursor (keyCode) {
               canvasCursor.loc = 0;
 	    }
 	    if (keyCode == 188) { // Player presses ','
-              heroes[turnIndex].target = monsters[canvasCursor.index]
+              heroes[turnIndex].target = monsters[canvasCursor.index];
+              heroes[turnIndex].x = heroes[turnIndex].x - 75;
               $('#fight-action').append(menuCursor);
               turnIndex += 1;
+              if (turnIndex == heroes.length) {
+                //BEGIN BATTLE SEQUENCE
+                break;
+              }
+              heroes[turnIndex].x = heroes[turnIndex].x + 75;
               canvasCursor.index = 0;
               canvasCursor.loc = 0;
 	    }
@@ -349,6 +355,7 @@ var initialize = function () {
           var hero = new heroObject(heroClasses[i]);
           heroes.push(hero);
         }
+        heroes[turnIndex].x = heroes[turnIndex].x + 75
         for(var i=0;i<6;i++){  
           monster = new monsterObject(monsterClasses[i%2]);
           monsters.push(monster);
