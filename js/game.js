@@ -15,6 +15,7 @@ var bgImage;
 var menuImage;
 var heroes = [];
 var monsters = [];
+var battleMenu = [];
 var turnIndex = 0;
 var canvasCursor;
 
@@ -101,6 +102,24 @@ function updateCursor (keyCode) {
           case 4:               // Hero Area
             break;
           case 5:               //  Monster Area
+	    if (keyCode == 87) { // Player presses 'w'
+              canvasCursor.index -= 2;
+              if (canvasCursor.index < 0) {
+                canvasCursor.index = canvasCursor.index + monsters.length;
+              }
+	    }
+	    if (keyCode == 83) { // Player presses 's'
+              canvasCursor.index = (canvasCursor.index + 2) % monsters.length;
+	    }
+	    if (keyCode == 65) { // Player presses 'a'
+              canvasCursor.index -= 1;
+              if (canvasCursor.index < 0) {
+                canvasCursor.index = canvasCursor.index + monsters.length;
+              }
+	    }
+	    if (keyCode == 68) { // Player presses 'd'
+              canvasCursor.index = (canvasCursor.index + 1) % monsters.length;
+	    }
 
             break;
         }
