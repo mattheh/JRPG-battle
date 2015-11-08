@@ -234,6 +234,9 @@ function heroObject(heroClass) {
   this.y = 100 + heroes.length * 80;
   this.heroClass = heroClass.class;
   this.state = "idle";
+  this.action;
+  this.target;
+
   
   return this;
 }
@@ -290,6 +293,7 @@ var initialize = function () {
 };
 
 var resetGame = function () {
+        heroes.length = 0;
         monsters.length = 0;
 }
 
