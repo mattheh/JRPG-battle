@@ -17,6 +17,8 @@ var heroes = [];
 var monsters = [];
 var cursorLoc = 0;
 var cursor;
+var hero;
+var monster;
 
 
 //===================================
@@ -132,6 +134,9 @@ function renderGame () {
     for (var i = 0; i < heroes.length; i++){
       heroes[i].render();
     }
+    for (var i = 0; i < monsters.length; i++){
+      monsters[i].render();
+    }
 
     //render cursor
 
@@ -158,6 +163,8 @@ function sprite (options) {
   this.width = options.width;
   this.height = options.height;
   this.image = options.image;
+  this.resize_x = options.resize_x;
+  this.resize_y = options.resize_y;
 
   
   this.update = function () {
@@ -185,8 +192,8 @@ function sprite (options) {
       this.height,
       this.x,
       this.y,
-      75,
-      75
+      this.resize_x,
+      this.resize_y
       );
       /** health bar */
       this.context.fillStyle="#FFFFFF";
@@ -214,7 +221,9 @@ function heroObject(heroClass) {
     context: canvas.getContext("2d"),
     width: 44,
     height: 44,
-    image: heroImage
+    image: heroImage,
+    resize_x: 75,
+    resize_y: 75
   });
   // Add hero-like attributes
   
@@ -229,16 +238,54 @@ function heroObject(heroClass) {
   return this;
 }
 
+function monsterObject(monsterClass) {
+  // Create sprite sheet
+  var monsterImage = new Image();
+  monsterImage.src = monsterClass.img;
+
+  // Create Monster sprite object
+  sprite.call(this, {
+    ticksPerFrame: 0,
+    numberOfFrames: 1,
+    context: canvas.getContext("2d"),
+    width: 44,
+    height: 44,
+    image: monsterImage,
+    resize_x: 125,
+    resize_y: 125
+  });
+  // Add monster-like attributes
+  
+  this.health = monsterClass.health;
+  this.totalHealth = monsterClass.health;
+  this.attack = monsterClass.attack;
+  this.x = 500 + (150 * (monsters.length % 2));
+  this.y = 100 + ((Math.floor(monsters.length / 2)) * 125);
+  this.monsterClass = monsterClass.class;
+  
+  return this;
+}
 //===================================
 // GAME FUNCTIONS
 //===================================
 
 var initialize = function () {
         resetGame();
-        var hero;
     for(var i=0;i<heroClasses.length;i++){  
         hero = new heroObject(heroClasses[i]);
         heroes.push(hero);
+    }
+    for(var i=0;i<monsterClasses.length;i++){  
+        monster = new monsterObject(monsterClasses[i]);
+        monsters.push(monster);
+    }
+    for(var i=0;i<monsterClasses.length;i++){  
+        monster = new monsterObject(monsterClasses[i]);
+        monsters.push(monster);
+    }
+    for(var i=0;i<monsterClasses.length;i++){  
+        monster = new monsterObject(monsterClasses[i]);
+        monsters.push(monster);
     }
 };
 
