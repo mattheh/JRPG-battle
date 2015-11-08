@@ -120,6 +120,13 @@ function updateCursor (keyCode) {
               canvasCursor.index = 0;
               canvasCursor.loc = 0;
 	    }
+	    if (keyCode == 188) { // Player presses ','
+              heroes[turnIndex].target = monsters[canvasCursor.index]
+              $('#fight-action').append(menuCursor);
+              turnIndex += 1;
+              canvasCursor.index = 0;
+              canvasCursor.loc = 0;
+	    }
 
             break;
         }
