@@ -7,7 +7,7 @@ canvas.height = 600;//480
 //===================================
 // VARIABLES
 //===================================
-var state = "Menu";
+var state = "menu";
 var keysDown = {};
 var bgReady = false;
 var menuReady = false;
@@ -15,10 +15,8 @@ var bgImage;
 var menuImage;
 var heroes = [];
 var monsters = [];
-var cursorLoc = 0;
-var cursor;
-var hero;
-var monster;
+var turnIndex = 0;
+var canvasCursor;
 
 
 //===================================
@@ -42,8 +40,17 @@ function loadAssets () {
   	menuReady = true;
   };
   menuImage.src = "assets/images/intro_menu.jpg";
+
+  cursorImage = new Image();
+  cursorImage.src = "assets/images/cursor.png"
+
+  cursor2Image = new Image();
+  cursor2Image.src = "assets/images/cursor2.png"
     
   addEventListener("keydown", function (e) {
+        if (state == "game") {
+        updateCursor(e.keyCode);
+        };
   	keysDown[e.keyCode] = true;
   }, false);
   
@@ -53,12 +60,57 @@ function loadAssets () {
 
 
 }
+function updateCursor (keyCode) {
+        switch (canvasCursor.loc) {
+          case 0: 
+	    if (keyCode == 68) { // Player presses 'd'
+              setCursor(2);
+	    }
+	    if (keyCode == 83) { // Player presses 's'
+              setCursor(1);
+	    }
+	    if (keyCode == 188) { // Player presses ','
+              heroes[turnIndex].action = "fight"
+              setCursor(5);
+	    }
+            break;
+          case 1:
+	    if (keyCode == 87) { // Player presses 'w'
+              setCursor(0);
+	    }
+	    if (keyCode == 68) { // Player presses 'd'
+              setCursor(3);
+	    }
+            break;
+          case 2:
+	    if (keyCode == 65) { // Player presses 'a'
+              setCursor(0);
+	    }
+	    if (keyCode == 83) { // Player presses 's'
+              setCursor(3);
+	    }
+            break;
+          case 3:
+	    if (keyCode == 87) { // Player presses 'w'
+              setCursor(2);
+	    }
+	    if (keyCode == 65) { // Player presses 'a'
+              setCursor(1);
+	    }
+            break;
+          case 4:               // Hero Area
+            break;
+          case 5:               //  Monster Area
 
+            break;
+        }
+        
+}
 /*-----Update-----*/
 
 function updateMenu () {
 	if (32 in keysDown) { // Player presses space
-		state = "Game";
+		state = "game";
         initialize();
         canvas.height = 480;
         $('#battle-menu').show();
@@ -66,40 +118,6 @@ function updateMenu () {
 }
 
 var updateGame = function (modifier) {
-        switch (cursorLoc) {
-          case 0: 
-	    if (68 in keysDown) { // Player holding right
-              setCursor(2);
-	    }
-	    if (83 in keysDown) { // Player holding down
-              setCursor(1);
-	    }
-            break;
-          case 1:
-	    if (87 in keysDown) { // Player holding up
-              setCursor(0);
-	    }
-	    if (68 in keysDown) { // Player holding right
-              setCursor(3);
-	    }
-            break;
-          case 2:
-	    if (65 in keysDown) { // Player holding left
-              setCursor(0);
-	    }
-	    if (83 in keysDown) { // Player holding down
-              setCursor(3);
-	    }
-            break;
-          case 3:
-	    if (87 in keysDown) { // Player holding up
-              setCursor(2);
-	    }
-	    if (65 in keysDown) { // Player holding left
-              setCursor(1);
-	    }
-            break;
-        }
 	if (87 in keysDown) { // Player holding up
 	}
 	if (83 in keysDown) { // Player holding down
@@ -129,16 +147,17 @@ function renderMenu () {
 function renderGame () {
 	if (bgReady) {
 		ctx.drawImage(bgImage, 0, 0);
-    }
+        }
     
-    for (var i = 0; i < heroes.length; i++){
-      heroes[i].render();
-    }
-    for (var i = 0; i < monsters.length; i++){
-      monsters[i].render();
-    }
+        for (var i = 0; i < heroes.length; i++){
+          heroes[i].render();
+        }
+        for (var i = 0; i < monsters.length; i++){
+          monsters[i].render();
+        }
 
-    //render cursor
+        //render cursor
+        canvasCursor.render();
 
 
 };
@@ -150,7 +169,33 @@ function renderGame () {
 function baseObject () {
 }
 
-function sprite (options) {
+function cursorObject() {
+  baseObject.call(this);
+  this.loc = 0;
+  this.index = 0;
+
+  this.render = function () {
+    // Draw the animation
+    if (this.loc == 5) {
+    ctx.drawImage(
+      cursor2Image,
+      0,
+      0,
+      35,
+      35,
+      monsters[this.index].x - 35,
+      monsters[this.index].y + 35,
+      35,
+      35
+      );
+    };
+  };
+
+  return this;
+
+}
+
+function spriteObject (options) {
   baseObject.call(this);         
   this.frameIndex = 0;
   this.tickCount = 0;
@@ -215,7 +260,7 @@ function heroObject(heroClass) {
   heroImage.src = heroClass.img;
 
   // Create Hero sprite object
-  sprite.call(this, {
+  spriteObject.call(this, {
     ticksPerFrame: 0,
     numberOfFrames: 1,
     context: canvas.getContext("2d"),
@@ -247,7 +292,7 @@ function monsterObject(monsterClass) {
   monsterImage.src = monsterClass.img;
 
   // Create Monster sprite object
-  sprite.call(this, {
+  spriteObject.call(this, {
     ticksPerFrame: 0,
     numberOfFrames: 1,
     context: canvas.getContext("2d"),
@@ -274,20 +319,21 @@ function monsterObject(monsterClass) {
 
 var initialize = function () {
         resetGame();
+        canvasCursor = new cursorObject();
     for(var i=0;i<heroClasses.length;i++){  
-        hero = new heroObject(heroClasses[i]);
+        var hero = new heroObject(heroClasses[i]);
         heroes.push(hero);
     }
     for(var i=0;i<monsterClasses.length;i++){  
-        monster = new monsterObject(monsterClasses[i]);
+        var monster = new monsterObject(monsterClasses[i]);
         monsters.push(monster);
     }
     for(var i=0;i<monsterClasses.length;i++){  
-        monster = new monsterObject(monsterClasses[i]);
+        var monster = new monsterObject(monsterClasses[i]);
         monsters.push(monster);
     }
     for(var i=0;i<monsterClasses.length;i++){  
-        monster = new monsterObject(monsterClasses[i]);
+        var monster = new monsterObject(monsterClasses[i]);
         monsters.push(monster);
     }
 };
@@ -299,7 +345,7 @@ var resetGame = function () {
 
 var setCursor = function (loc) {
         var cursor = $('#cursor').detach();
-              $('#item-action').append(cursor);
+
         switch (loc) {
           case 0:
             $('#fight-action').append(cursor);
@@ -313,8 +359,12 @@ var setCursor = function (loc) {
           case 3:
             $('#run-action').append(cursor);
             break;
+          case 4:
+            break;
+          case 5:
+            break;
           }
-        cursorLoc = loc;
+        canvasCursor.loc = loc;
 
 }
 
@@ -323,12 +373,12 @@ var menuLoop = function () {
         updateMenu();
         renderMenu();
         switch (state) {
-          case "Menu":
+          case "menu":
 	    // Switch to menu state
       	    requestAnimationFrame(menuLoop);
             break;
 
-          case "Game":
+          case "game":
 	    // Request to do this again ASAP
       	    requestAnimationFrame(gameLoop);
             break;
@@ -350,12 +400,12 @@ var gameLoop = function () {
 	then = now;
 
         switch (state) {
-          case "Menu":
+          case "menu":
 	    // Switch to menu state
       	    requestAnimationFrame(menuLoop);
             break;
 
-          case "Game":
+          case "game":
 	    // Request to do this again ASAP
       	    requestAnimationFrame(gameLoop);
             break;
