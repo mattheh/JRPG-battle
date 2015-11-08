@@ -1,9 +1,8 @@
 // Create the canvas
-var canvas = document.createElement("canvas");
+var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 canvas.width = 750;
-canvas.height = 445;
-document.body.appendChild(canvas);
+canvas.height = 565;//445
 
 //===================================
 // VARIABLES
@@ -26,7 +25,6 @@ var monsters = [];
 
 function loadAssets () {
 
-
   // Background image
   bgImage = new Image();
   bgImage.onload = function () {
@@ -39,8 +37,8 @@ function loadAssets () {
   menuImage.onload = function () {
   	menuReady = true;
   };
-  menuImage.src = "assets/images/battlefield.png";
-  
+  menuImage.src = "assets/images/intro_menu.jpg";
+    
   addEventListener("keydown", function (e) {
   	keysDown[e.keyCode] = true;
   }, false);
@@ -57,7 +55,9 @@ function loadAssets () {
 function updateMenu () {
 	if (32 in keysDown) { // Player presses space
 		state = "Game";
-                initialize();
+        initialize();
+        canvas.height = 445;
+        $('#battle-menu').show();
 	}
 }
 
@@ -77,7 +77,7 @@ var updateGame = function (modifier) {
 
 function renderMenu () {
 	if (bgReady) {
-		ctx.drawImage(menuImage, 0, 0);
+		ctx.drawImage(menuImage, 500, 300,750,565,0, 0,750,565);
 	}
 
 	ctx.fillStyle = "rgb(250, 250, 250)";
@@ -85,14 +85,14 @@ function renderMenu () {
 	ctx.textAlign = "left";
 	ctx.textBaseline = "top";
 	ctx.fillText("JRPG BATTLE SIMULATOR", 170, 32);
-	ctx.fillText("SPACE key to start", 144, 144);
+	ctx.fillText("SPACE key to start", 280, 520);
 }
 
 function renderGame () {
 	if (bgReady) {
 		ctx.drawImage(bgImage, 0, 0);
-	}
-
+    }
+    
     for (var i = 0; i < heroes.length; i++){
       heroes[i].render();
     }

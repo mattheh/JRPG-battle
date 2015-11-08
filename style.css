@@ -1,9 +1,19 @@
+#container{
+    position: absolute;
+    left: 50%;
+    margin-left: -375px; 
+    top: 50%;
+    margin-top: -282px; 
+    padding: 0px;
+}
 
 canvas{
-    position: absolute;
-    top:0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: auto;
+    display: block;
+}
+
+#battle-menu{
+    background: black;
+    width:750px;
+    height:120px;
+    display:none;
 }
