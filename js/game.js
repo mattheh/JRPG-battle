@@ -1,9 +1,8 @@
 // Create the canvas
-var canvas = document.createElement("canvas");
+var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
-canvas.width = 750;
-canvas.height = 445;
-document.body.appendChild(canvas);
+canvas.width = 800;
+canvas.height = 600;//480
 
 //===================================
 // VARIABLES
@@ -16,6 +15,8 @@ var bgImage;
 var menuImage;
 var heroes = [];
 var monsters = [];
+var cursorLoc = 0;
+var cursor;
 
 
 //===================================
@@ -26,21 +27,20 @@ var monsters = [];
 
 function loadAssets () {
 
-
   // Background image
   bgImage = new Image();
   bgImage.onload = function () {
   	bgReady = true;
   };
-  bgImage.src = "assets/images/battlefield.png";
+  bgImage.src = "assets/images/battlefield.png";//800x480
   
   // Menu image
   menuImage = new Image();
   menuImage.onload = function () {
   	menuReady = true;
   };
-  menuImage.src = "assets/images/battlefield.png";
-  
+  menuImage.src = "assets/images/intro_menu.jpg";
+    
   addEventListener("keydown", function (e) {
   	keysDown[e.keyCode] = true;
   }, false);
@@ -57,18 +57,54 @@ function loadAssets () {
 function updateMenu () {
 	if (32 in keysDown) { // Player presses space
 		state = "Game";
-                initialize();
+        initialize();
+        canvas.height = 480;
+        $('#battle-menu').show();
 	}
 }
 
 var updateGame = function (modifier) {
-	if (38 in keysDown) { // Player holding up
+        switch (cursorLoc) {
+          case 0: 
+	    if (68 in keysDown) { // Player holding right
+              setCursor(2);
+	    }
+	    if (83 in keysDown) { // Player holding down
+              setCursor(1);
+	    }
+            break;
+          case 1:
+	    if (87 in keysDown) { // Player holding up
+              setCursor(0);
+	    }
+	    if (68 in keysDown) { // Player holding right
+              setCursor(3);
+	    }
+            break;
+          case 2:
+	    if (65 in keysDown) { // Player holding left
+              setCursor(0);
+	    }
+	    if (83 in keysDown) { // Player holding down
+              setCursor(3);
+	    }
+            break;
+          case 3:
+	    if (87 in keysDown) { // Player holding up
+              setCursor(2);
+	    }
+	    if (65 in keysDown) { // Player holding left
+              setCursor(1);
+	    }
+            break;
+        }
+	if (87 in keysDown) { // Player holding up
 	}
-	if (40 in keysDown) { // Player holding down
+	if (83 in keysDown) { // Player holding down
 	}
-	if (37 in keysDown) { // Player holding left
+	if (65 in keysDown) { // Player holding left
 	}
-	if (39 in keysDown) { // Player holding right
+	if (68 in keysDown) { // Player holding right
 	}
 
 };
@@ -77,7 +113,7 @@ var updateGame = function (modifier) {
 
 function renderMenu () {
 	if (bgReady) {
-		ctx.drawImage(menuImage, 0, 0);
+		ctx.drawImage(menuImage, 500, 300,800,600,0, 0,800,600);
 	}
 
 	ctx.fillStyle = "rgb(250, 250, 250)";
@@ -85,17 +121,20 @@ function renderMenu () {
 	ctx.textAlign = "left";
 	ctx.textBaseline = "top";
 	ctx.fillText("JRPG BATTLE SIMULATOR", 170, 32);
-	ctx.fillText("SPACE key to start", 144, 144);
+	ctx.fillText("SPACE key to start", 280, 520);
 }
 
 function renderGame () {
 	if (bgReady) {
 		ctx.drawImage(bgImage, 0, 0);
-	}
-
+    }
+    
     for (var i = 0; i < heroes.length; i++){
       heroes[i].render();
     }
+
+    //render cursor
+
 
 };
 
@@ -149,6 +188,15 @@ function sprite (options) {
       75,
       75
       );
+      /** health bar */
+      this.context.fillStyle="#FFFFFF";
+      this.context.strokeRect(this.x-11,this.y-21,72,22);
+      this.context.fillStyle="#448F30";
+      this.context.fillRect(this.x-10,this.y-20, 70, 20);
+      this.context.font="16px Courier";
+      this.context.fillStyle="#FFFFFF";
+      this.context.fillText(this.health + "/" + this.totalHealth, this.x-6, this.y-20, 60);
+      
   };
 
   return this;
@@ -171,8 +219,9 @@ function heroObject(heroClass) {
   // Add hero-like attributes
   
   this.health = heroClass.health;
+  this.totalHealth = heroClass.health;
   this.attack = heroClass.attack;
-  this.x = 0;
+  this.x = 20;
   this.y = 100 + heroes.length * 80;
   this.heroClass = heroClass.class;
   this.state = "idle";
@@ -195,6 +244,27 @@ var initialize = function () {
 
 var resetGame = function () {
         monsters.length = 0;
+}
+
+var setCursor = function (loc) {
+        var cursor = $('#cursor').detach();
+              $('#item-action').append(cursor);
+        switch (loc) {
+          case 0:
+            $('#fight-action').append(cursor);
+            break;
+          case 1:
+            $('#item-action').append(cursor);
+            break;
+          case 2:
+            $('#spell-action').append(cursor);
+            break;
+          case 3:
+            $('#run-action').append(cursor);
+            break;
+          }
+        cursorLoc = loc;
+
 }
 
 // The menu loop

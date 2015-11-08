@@ -2,11 +2,36 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Orc Chase</title>
+    <title>JRPG-battle</title>
 	<link rel="stylesheet" type="text/css" href="style.css">
   </head>
   <body>
-        <script src="js/hero_classes.js"></script>
+        <div id="container">
+            <canvas id="canvas"></canvas>
+            <div id="battle-menu">
+                <table id="menu-action-table">
+                    <tr>
+                        <td id="fight-action">Fight<img id="cursor" src="assets/images/cursor.png"></td>
+                        <td id="spell-action">Spell</td>
+                    </tr>
+                    <tr>
+                        <td id="item-action">Item</td>
+                        <td id="run-action">Run</td>
+                    </tr>
+                </table><table id="menu-subaction-table">
+                    <tr>
+                        <td>Test</td>
+                        <td>Test</td>
+                    </tr>
+                    <tr>
+                        <td>Test</td>
+                        <td>Test</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script src="js/char_classes.js"></script>
 		<script src="js/game.js"></script>
   </body>
 </html>
