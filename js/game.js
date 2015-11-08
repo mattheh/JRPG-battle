@@ -15,6 +15,8 @@ var bgImage;
 var menuImage;
 var heroes = [];
 var monsters = [];
+var cursorLoc = 0;
+var cursor;
 
 
 //===================================
@@ -62,6 +64,40 @@ function updateMenu () {
 }
 
 var updateGame = function (modifier) {
+        switch (cursorLoc) {
+          case 0: 
+	    if (39 in keysDown) { // Player holding right
+              setCursor(2);
+	    }
+	    if (40 in keysDown) { // Player holding down
+              setCursor(1);
+	    }
+            break;
+          case 1:
+	    if (38 in keysDown) { // Player holding up
+              setCursor(0);
+	    }
+	    if (39 in keysDown) { // Player holding right
+              setCursor(3);
+	    }
+            break;
+          case 2:
+	    if (37 in keysDown) { // Player holding left
+              setCursor(0);
+	    }
+	    if (40 in keysDown) { // Player holding down
+              setCursor(3);
+	    }
+            break;
+          case 3:
+	    if (38 in keysDown) { // Player holding up
+              setCursor(2);
+	    }
+	    if (37 in keysDown) { // Player holding left
+              setCursor(1);
+	    }
+            break;
+        }
 	if (38 in keysDown) { // Player holding up
 	}
 	if (40 in keysDown) { // Player holding down
@@ -96,6 +132,9 @@ function renderGame () {
     for (var i = 0; i < heroes.length; i++){
       heroes[i].render();
     }
+
+    //render cursor
+
 
 };
 
@@ -195,6 +234,27 @@ var initialize = function () {
 
 var resetGame = function () {
         monsters.length = 0;
+}
+
+var setCursor = function (loc) {
+        var cursor = $('#cursor').detach();
+              $('#item-action').append(cursor);
+        switch (loc) {
+          case 0:
+            $('#fight-action').append(cursor);
+            break;
+          case 1:
+            $('#item-action').append(cursor);
+            break;
+          case 2:
+            $('#spell-action').append(cursor);
+            break;
+          case 3:
+            $('#run-action').append(cursor);
+            break;
+          }
+        cursorLoc = loc;
+
 }
 
 // The menu loop
