@@ -15,7 +15,7 @@ var bgImage;
 var menuImage;
 var heroes = [];
 var monsters = [];
-var battleMenu = [];
+var battleMenu = ["fight", "item", "spell", "run"]
 var turnIndex = 0;
 var canvasCursor;
 
@@ -64,44 +64,38 @@ function loadAssets () {
 function updateCursor (keyCode) {
         switch (canvasCursor.loc) {
           case 0: 
-	    if (keyCode == 68) { // Player presses 'd'
-              setCursor(2);
+	    if (keyCode == 87) { // Player presses 'w'
+              canvasCursor.index -= 1;
+              if (canvasCursor.index < 0) {
+                canvasCursor.index = canvasCursor.index + battleMenu.length;
+              }
+              setCursor(canvasCursor.index);
+	    }
+	    if (keyCode == 65) { // Player presses 'a'
+              canvasCursor.index -= 2;
+              if (canvasCursor.index < 0) {
+                canvasCursor.index = canvasCursor.index + battleMenu.length;
+              }
+              setCursor(canvasCursor.index);
 	    }
 	    if (keyCode == 83) { // Player presses 's'
-              setCursor(1);
+              canvasCursor.index = (canvasCursor.index + 1) % battleMenu.length;
+              setCursor(canvasCursor.index);
+	    }
+	    if (keyCode == 68) { // Player presses 'd'
+              canvasCursor.index = (canvasCursor.index + 2) % battleMenu.length;
+              setCursor(canvasCursor.index);
 	    }
 	    if (keyCode == 188) { // Player presses ','
-              heroes[turnIndex].action = "fight"
-              setCursor(5);
+              heroes[turnIndex].action = battleMenu[canvasCursor.index]
+              $('#cursor').detach();
+              canvasCursor.index = 0;
+              canvasCursor.loc = 2;
 	    }
             break;
-          case 1:
-	    if (keyCode == 87) { // Player presses 'w'
-              setCursor(0);
-	    }
-	    if (keyCode == 68) { // Player presses 'd'
-              setCursor(3);
-	    }
+          case 1:               // Hero Area
             break;
-          case 2:
-	    if (keyCode == 65) { // Player presses 'a'
-              setCursor(0);
-	    }
-	    if (keyCode == 83) { // Player presses 's'
-              setCursor(3);
-	    }
-            break;
-          case 3:
-	    if (keyCode == 87) { // Player presses 'w'
-              setCursor(2);
-	    }
-	    if (keyCode == 65) { // Player presses 'a'
-              setCursor(1);
-	    }
-            break;
-          case 4:               // Hero Area
-            break;
-          case 5:               //  Monster Area
+          case 2:               //  Monster Area
 	    if (keyCode == 87) { // Player presses 'w'
               canvasCursor.index -= 2;
               if (canvasCursor.index < 0) {
@@ -188,7 +182,6 @@ function renderGame () {
 function baseObject () {
 }
 
-count = 0;
 function cursorObject() {
   baseObject.call(this);
   this.loc = 0;
@@ -196,7 +189,7 @@ function cursorObject() {
 
   this.render = function () {
     // Draw the animation
-    if (this.loc == 5) {
+    if (this.loc == 2) {
     ctx.drawImage(
       cursor2Image,
       0,
@@ -339,14 +332,14 @@ function monsterObject(monsterClass) {
 var initialize = function () {
         resetGame();
         canvasCursor = new cursorObject();
-    for(var i=0;i<heroClasses.length;i++){  
-        var hero = new heroObject(heroClasses[i]);
-        heroes.push(hero);
-    }
-    for(var i=0;i<6;i++){  
-        monster = new monsterObject(monsterClasses[i%2]);
-        monsters.push(monster);
-    }
+        for(var i=0;i<heroClasses.length;i++){  
+          var hero = new heroObject(heroClasses[i]);
+          heroes.push(hero);
+        }
+        for(var i=0;i<6;i++){  
+          monster = new monsterObject(monsterClasses[i%2]);
+          monsters.push(monster);
+        }
 };
 
 var resetGame = function () {
@@ -354,28 +347,10 @@ var resetGame = function () {
         monsters.length = 0;
 }
 
-var setCursor = function (loc) {
+var setCursor = function (action) {
         var cursor = $('#cursor').detach();
-
-        switch (loc) {
-          case 0:
-            $('#fight-action').append(cursor);
-            break;
-          case 1:
-            $('#item-action').append(cursor);
-            break;
-          case 2:
-            $('#spell-action').append(cursor);
-            break;
-          case 3:
-            $('#run-action').append(cursor);
-            break;
-          case 4:
-            break;
-          case 5:
-            break;
-          }
-        canvasCursor.loc = loc;
+        var string = '#' + battleMenu[action] + '-action'
+        $(string).append(cursor);
 
 }
 
