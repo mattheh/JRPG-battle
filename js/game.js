@@ -18,6 +18,7 @@ var monsters = [];
 var battleMenu = ["fight", "item", "spell", "run"]
 var turnIndex = 0;
 var canvasCursor;
+var menuCursor;
 
 
 //===================================
@@ -88,7 +89,7 @@ function updateCursor (keyCode) {
 	    }
 	    if (keyCode == 188) { // Player presses ','
               heroes[turnIndex].action = battleMenu[canvasCursor.index]
-              $('#cursor').detach();
+              menuCursor = $('#cursor').detach();
               canvasCursor.index = 0;
               canvasCursor.loc = 2;
 	    }
@@ -113,6 +114,11 @@ function updateCursor (keyCode) {
 	    }
 	    if (keyCode == 68) { // Player presses 'd'
               canvasCursor.index = (canvasCursor.index + 1) % monsters.length;
+	    }
+	    if (keyCode == 76) { // Player presses 'l'
+              $('#fight-action').append(menuCursor);
+              canvasCursor.index = 0;
+              canvasCursor.loc = 0;
 	    }
 
             break;
@@ -348,9 +354,9 @@ var resetGame = function () {
 }
 
 var setCursor = function (action) {
-        var cursor = $('#cursor').detach();
+        menuCursor = $('#cursor').detach();
         var string = '#' + battleMenu[action] + '-action'
-        $(string).append(cursor);
+        $(string).append(menuCursor);
 
 }
 
