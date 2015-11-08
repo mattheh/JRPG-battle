@@ -1,8 +1,8 @@
 // Create the canvas
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
-canvas.width = 750;
-canvas.height = 565;//445
+canvas.width = 800;
+canvas.height = 600;//480
 
 //===================================
 // VARIABLES
@@ -30,7 +30,7 @@ function loadAssets () {
   bgImage.onload = function () {
   	bgReady = true;
   };
-  bgImage.src = "assets/images/battlefield.png";
+  bgImage.src = "assets/images/battlefield.png";//800x480
   
   // Menu image
   menuImage = new Image();
@@ -56,7 +56,7 @@ function updateMenu () {
 	if (32 in keysDown) { // Player presses space
 		state = "Game";
         initialize();
-        canvas.height = 445;
+        canvas.height = 480;
         $('#battle-menu').show();
 	}
 }
@@ -77,7 +77,7 @@ var updateGame = function (modifier) {
 
 function renderMenu () {
 	if (bgReady) {
-		ctx.drawImage(menuImage, 500, 300,750,565,0, 0,750,565);
+		ctx.drawImage(menuImage, 500, 300,800,600,0, 0,800,600);
 	}
 
 	ctx.fillStyle = "rgb(250, 250, 250)";
