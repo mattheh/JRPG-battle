@@ -149,7 +149,7 @@ function renderGame () {
 
 function baseObject () {
 }
-
+count = 0;
 function sprite (options) {
   baseObject.call(this);         
   this.frameIndex = 0;
@@ -186,23 +186,20 @@ function sprite (options) {
     // Draw the animation
     this.context.drawImage(
       this.image,
-      this.frameIndex * this.width / this.numberOfFrames,
-      0,
-      this.width / this.numberOfFrames,
-      this.height,
       this.x,
       this.y,
       this.resize_x,
       this.resize_y
       );
       /** health bar */
+      var centerX = this.x + (this.resize_x)/2;
       this.context.fillStyle="#FFFFFF";
-      this.context.strokeRect(this.x-11,this.y-21,72,22);
+      this.context.strokeRect(centerX-35,this.y-21,72,22);
       this.context.fillStyle="#448F30";
-      this.context.fillRect(this.x-10,this.y-20, 70, 20);
+      this.context.fillRect(centerX-34,this.y-20, 70, 20);
       this.context.font="16px Courier";
       this.context.fillStyle="#FFFFFF";
-      this.context.fillText(this.health + "/" + this.totalHealth, this.x-6, this.y-20, 60);
+      this.context.fillText(this.health + "/" + this.totalHealth, centerX-30, this.y-18, 60);
       
   };
 
@@ -210,6 +207,7 @@ function sprite (options) {
 }
 
 function heroObject(heroClass) {
+  this.charType = "hero";
   // Create sprite sheet
   var heroImage = new Image();
   heroImage.src = heroClass.img;
@@ -231,7 +229,7 @@ function heroObject(heroClass) {
   this.totalHealth = heroClass.health;
   this.attack = heroClass.attack;
   this.x = 20;
-  this.y = 100 + heroes.length * 80;
+  this.y = 100 + heroes.length * 100;
   this.heroClass = heroClass.class;
   this.state = "idle";
   
@@ -239,6 +237,7 @@ function heroObject(heroClass) {
 }
 
 function monsterObject(monsterClass) {
+    this.charType = "monster";
   // Create sprite sheet
   var monsterImage = new Image();
   monsterImage.src = monsterClass.img;
@@ -275,16 +274,8 @@ var initialize = function () {
         hero = new heroObject(heroClasses[i]);
         heroes.push(hero);
     }
-    for(var i=0;i<monsterClasses.length;i++){  
-        monster = new monsterObject(monsterClasses[i]);
-        monsters.push(monster);
-    }
-    for(var i=0;i<monsterClasses.length;i++){  
-        monster = new monsterObject(monsterClasses[i]);
-        monsters.push(monster);
-    }
-    for(var i=0;i<monsterClasses.length;i++){  
-        monster = new monsterObject(monsterClasses[i]);
+    for(var i=0;i<6;i++){  
+        monster = new monsterObject(monsterClasses[i%2]);
         monsters.push(monster);
     }
 };
@@ -338,10 +329,6 @@ var gameLoop = function () {
 	var delta = now - then;
 	updateGame(delta / 1000);
 	renderGame();
-
-        for (var i = 0; i < heroes.length; i++){
-          heroes[i].render();
-        }
 
 	then = now;
 
