@@ -149,6 +149,15 @@ function sprite (options) {
       75,
       75
       );
+      /** health bar */
+      this.context.fillStyle="#FFFFFF";
+      this.context.strokeRect(this.x-11,this.y-21,72,22);
+      this.context.fillStyle="#448F30";
+      this.context.fillRect(this.x-10,this.y-20, 70, 20);
+      this.context.font="16px Courier";
+      this.context.fillStyle="#FFFFFF";
+      this.context.fillText(this.health + "/" + this.totalHealth, this.x-6, this.y-20, 60);
+      
   };
 
   return this;
@@ -171,8 +180,9 @@ function heroObject(heroClass) {
   // Add hero-like attributes
   
   this.health = heroClass.health;
+  this.totalHealth = heroClass.health;
   this.attack = heroClass.attack;
-  this.x = 0;
+  this.x = 20;
   this.y = 100 + heroes.length * 80;
   this.heroClass = heroClass.class;
   this.state = "idle";
