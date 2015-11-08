@@ -66,45 +66,45 @@ function updateMenu () {
 var updateGame = function (modifier) {
         switch (cursorLoc) {
           case 0: 
-	    if (39 in keysDown) { // Player holding right
+	    if (68 in keysDown) { // Player holding right
               setCursor(2);
 	    }
-	    if (40 in keysDown) { // Player holding down
+	    if (83 in keysDown) { // Player holding down
               setCursor(1);
 	    }
             break;
           case 1:
-	    if (38 in keysDown) { // Player holding up
+	    if (87 in keysDown) { // Player holding up
               setCursor(0);
 	    }
-	    if (39 in keysDown) { // Player holding right
+	    if (68 in keysDown) { // Player holding right
               setCursor(3);
 	    }
             break;
           case 2:
-	    if (37 in keysDown) { // Player holding left
+	    if (65 in keysDown) { // Player holding left
               setCursor(0);
 	    }
-	    if (40 in keysDown) { // Player holding down
+	    if (83 in keysDown) { // Player holding down
               setCursor(3);
 	    }
             break;
           case 3:
-	    if (38 in keysDown) { // Player holding up
+	    if (87 in keysDown) { // Player holding up
               setCursor(2);
 	    }
-	    if (37 in keysDown) { // Player holding left
+	    if (65 in keysDown) { // Player holding left
               setCursor(1);
 	    }
             break;
         }
-	if (38 in keysDown) { // Player holding up
+	if (87 in keysDown) { // Player holding up
 	}
-	if (40 in keysDown) { // Player holding down
+	if (83 in keysDown) { // Player holding down
 	}
-	if (37 in keysDown) { // Player holding left
+	if (65 in keysDown) { // Player holding left
 	}
-	if (39 in keysDown) { // Player holding right
+	if (68 in keysDown) { // Player holding right
 	}
 
 };
