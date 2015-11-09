@@ -199,7 +199,7 @@ function nextHero () {
 
 function updateSubmenu(selectedAction){
     if(selectedAction == "item"){
-        $('#subaction-1').text('Health potion potion');
+        $('#subaction-1').text('Health potion');
         $('#subaction-2').text('Herb');
         $('#subaction-3').text('Antidote');
         $('#subaction-4').text('Powerup');

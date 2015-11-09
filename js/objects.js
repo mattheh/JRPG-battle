@@ -91,8 +91,6 @@ function heroObject(heroClass) {
   this.charType = "hero";
   // Create sprite sheet
   var heroImage = new Image();
-  heroImage.src = imgPath + "heroes/" + heroClass.class + "_" + "idle" + imgExtension;
-
   // Create Hero sprite object
   spriteObject.call(this, {
     ticksPerFrame: 0,
@@ -116,7 +114,7 @@ function heroObject(heroClass) {
   this.state = "idle";
   this.action;
   this.target;
-
+  heroImage.src = imgPath + "heroes/" + heroClass.class + "_" + this.state + imgExtension;
   
   return this;
 }
