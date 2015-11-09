@@ -5,6 +5,16 @@ canvas.width = 800;
 canvas.height = 600;//480
 
 //===================================
+// CONSTANTS
+//===================================
+
+var UP_KEY = 87;//   W
+var LEFT_KEY = 65;// A
+var DOWN_KEY = 83;// S
+var RIGHT_KEY = 68;//D
+var A_KEY = 188; //  ,
+var B_KEY = 76;//    l
+//===================================
 // VARIABLES
 //===================================
 var state = "menu";
@@ -65,30 +75,33 @@ function loadAssets () {
 function updateCursor (keyCode) {
         switch (canvasCursor.loc) {
           case 0: 
-	    if (keyCode == 87) { // Player presses 'w'
+	    if (keyCode == UP_KEY) { // Player presses 'w'
               canvasCursor.index -= 1;
               if (canvasCursor.index < 0) {
                 canvasCursor.index = canvasCursor.index + battleMenu.length;
               }
               setCursor(canvasCursor.index);
 	    }
-	    if (keyCode == 65) { // Player presses 'a'
+	    if (keyCode == LEFT_KEY) { // Player presses 'a'
               canvasCursor.index -= 2;
               if (canvasCursor.index < 0) {
                 canvasCursor.index = canvasCursor.index + battleMenu.length;
               }
               setCursor(canvasCursor.index);
 	    }
-	    if (keyCode == 83) { // Player presses 's'
+	    if (keyCode == DOWN_KEY) { // Player presses 's'
               canvasCursor.index = (canvasCursor.index + 1) % battleMenu.length;
               setCursor(canvasCursor.index);
 	    }
-	    if (keyCode == 68) { // Player presses 'd'
+	    if (keyCode == RIGHT_KEY) { // Player presses 'd'
               canvasCursor.index = (canvasCursor.index + 2) % battleMenu.length;
               setCursor(canvasCursor.index);
 	    }
-	    if (keyCode == 188) { // Player presses ','
-              heroes[turnIndex].action = battleMenu[canvasCursor.index]
+	    if (keyCode == A_KEY) { // Player presses ','
+              var selectedAction = battleMenu[canvasCursor.index];
+              heroes[turnIndex].action = selectedAction;
+              if(selectedAction == "item" || selectedAction == "spell")
+                  updateSubmenu(selectedAction);
               menuCursor = $('#cursor').detach();
               canvasCursor.index = 0;
               canvasCursor.loc = 2;
@@ -97,34 +110,36 @@ function updateCursor (keyCode) {
           case 1:               // Hero Area
             break;
           case 2:               //  Monster Area
-	    if (keyCode == 87) { // Player presses 'w'
+	    if (keyCode == UP_KEY) { // Player presses 'w'
               canvasCursor.index -= 2;
               if (canvasCursor.index < 0) {
                 canvasCursor.index = canvasCursor.index + monsters.length;
               }
 	    }
-	    if (keyCode == 83) { // Player presses 's'
+	    if (keyCode == DOWN_KEY) { // Player presses 's'
               canvasCursor.index = (canvasCursor.index + 2) % monsters.length;
 	    }
-	    if (keyCode == 65) { // Player presses 'a'
+	    if (keyCode == LEFT_KEY) { // Player presses 'a'
               canvasCursor.index -= 1;
               if (canvasCursor.index < 0) {
                 canvasCursor.index = canvasCursor.index + monsters.length;
               }
 	    }
-	    if (keyCode == 68) { // Player presses 'd'
+	    if (keyCode == RIGHT_KEY) { // Player presses 'd'
               canvasCursor.index = (canvasCursor.index + 1) % monsters.length;
 	    }
-	    if (keyCode == 76) { // Player presses 'l'
+	    if (keyCode == B_KEY) { // Player presses 'l'
               $('#fight-action').append(menuCursor);
+              resetSubmenu();
               canvasCursor.index = 0;
               canvasCursor.loc = 0;
 	    }
-	    if (keyCode == 188) { // Player presses ','
+	    if (keyCode == A_KEY) { // Player presses ','
               heroes[turnIndex].target = monsters[canvasCursor.index];
               heroes[turnIndex].x = heroes[turnIndex].x - 75;
               $('#fight-action').append(menuCursor);
               turnIndex += 1;
+              resetSubmenu();
               if (turnIndex == heroes.length) {
                 //BEGIN BATTLE SEQUENCE
                 break;
@@ -138,6 +153,25 @@ function updateCursor (keyCode) {
         }
         
 }
+
+function updateSubmenu(selectedAction){
+    if(selectedAction == "item"){
+        $('#subaction-1').text('Health potion');
+        $('#subaction-2').text('Herb');
+        $('#subaction-3').text('Antidote');
+        $('#subaction-4').text('Powerup');
+    }else if(selectedAction == "spell"){
+        $('#subaction-1').text('Fireball');
+        $('#subaction-2').text('Energy shield');
+        $('#subaction-3').text('Deep freeze');
+        $('#subaction-4').text('Confusion');
+    }
+}
+
+function resetSubmenu(){
+    $('#menu-subaction-table td').text("");
+}
+
 /*-----Update-----*/
 
 function updateMenu () {
