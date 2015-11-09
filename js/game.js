@@ -26,7 +26,8 @@ var bgImage;
 var menuImage;
 var heroes = [];
 var monsters = [];
-var battleMenu = ["fight", "item", "spell", "run"]
+var battleMenu = ["fight", "item", "spell", "run"];
+var subMenu = ["subaction-1", "subaction-2", "subaction-3", "subaction-4"];
 var turnIndex = 0;
 var canvasCursor;
 var menuCursor;
@@ -101,11 +102,18 @@ function updateCursor (keyCode) {
 	    if (keyCode == A_KEY) { // Player presses ','
               var selectedAction = battleMenu[canvasCursor.index];
               heroes[turnIndex].action = selectedAction;
-              if(selectedAction == "item" || selectedAction == "spell")
-                  updateSubmenu(selectedAction);
               menuCursor = $('#cursor').detach();
               canvasCursor.index = 0;
-              canvasCursor.loc = 2;
+              if(selectedAction == "fight")
+                  canvasCursor.loc = 2;
+              if(selectedAction == "item" || selectedAction == "spell") {
+                  updateSubmenu(selectedAction);
+                  canvasCursor.index = 4;
+                  $('#subaction-1').append(menuCursor);
+                  canvasCursor.loc = 3;
+              }
+              if(selectedAction == "run")
+                  nextHero();
 	    }
             break;
           case 1:               // Hero Area
@@ -137,22 +145,53 @@ function updateCursor (keyCode) {
 	    }
 	    if (keyCode == A_KEY) { // Player presses ','
               heroes[turnIndex].target = monsters[canvasCursor.index];
-              heroes[turnIndex].x = heroes[turnIndex].x - 75;
-              $('#fight-action').append(menuCursor);
-              turnIndex += 1;
+              nextHero();
               resetSubmenu();
-              if (turnIndex == heroes.length) {
-                //BEGIN BATTLE SEQUENCE
-                break;
-              }
-              heroes[turnIndex].x = heroes[turnIndex].x + 75;
-              canvasCursor.index = 0;
-              canvasCursor.loc = 0;
 	    }
 
             break;
+          case 3:               // Submenu
+	    if (keyCode == UP_KEY) { // Player presses 'w'
+              canvasCursor.index -= 1;
+              if (canvasCursor.index < 4) {
+                canvasCursor.index = canvasCursor.index + subMenu.length;
+              }
+              setCursor(canvasCursor.index);
+	    }
+	    if (keyCode == LEFT_KEY) { // Player presses 'a'
+              canvasCursor.index -= 2;
+              if (canvasCursor.index < 4) {
+                canvasCursor.index = canvasCursor.index + battleMenu.length;
+              }
+              setCursor(canvasCursor.index);
+	    }
+	    if (keyCode == DOWN_KEY) { // Player presses 's'
+              canvasCursor.index = ((canvasCursor.index + 1) % battleMenu.length) + 4;
+              setCursor(canvasCursor.index);
+	    }
+	    if (keyCode == RIGHT_KEY) { // Player presses 'd'
+              canvasCursor.index = ((canvasCursor.index + 2) % battleMenu.length) + 4;
+              setCursor(canvasCursor.index);
+	    }
+	    if (keyCode == B_KEY) { // Player presses 'l'
+              $('#fight-action').append(menuCursor);
+              resetSubmenu();
+              canvasCursor.index = 0;
+              canvasCursor.loc = 0;
+	    }
+            break;
+
         }
         
+}
+function nextHero () {
+        $('#fight-action').append(menuCursor);
+        heroes[turnIndex].x = heroes[turnIndex].x - 75;
+        turnIndex += 1;
+        heroes[turnIndex].x = heroes[turnIndex].x + 75;
+        canvasCursor.index = 0;
+        canvasCursor.loc = 0;
+
 }
 
 function updateSubmenu(selectedAction){
@@ -185,6 +224,10 @@ function updateMenu () {
 }
 
 var updateGame = function (modifier) {
+        if (turnIndex == heroes.length) {
+          //BEGIN BATTLE SEQUENCE
+        
+        }
 	if (87 in keysDown) { // Player holding up
 	}
 	if (83 in keysDown) { // Player holding down
@@ -402,9 +445,13 @@ var resetGame = function () {
         monsters.length = 0;
 }
 
-var setCursor = function (action) {
+var setCursor = function (menuIndex) {
         menuCursor = $('#cursor').detach();
-        var string = '#' + battleMenu[action] + '-action'
+        if (menuIndex < 4) {
+            var string = '#' + battleMenu[menuIndex] + '-action'
+        } else {
+            var string = '#' + subMenu[menuIndex % 4]
+        }
         $(string).append(menuCursor);
 
 }
