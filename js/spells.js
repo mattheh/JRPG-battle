@@ -8,7 +8,7 @@ var spells = [
          targets: 1,
 	 affects: "monster"},
     {name: "Temper",
-	 description: "Restores 150 HP",
+	 description: "Increase damage temporarily",
          targets: 1,
 	 affects: "hero"},
     {name: "Fira",

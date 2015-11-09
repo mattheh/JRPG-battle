@@ -208,7 +208,11 @@ function updateCursor (keyCode) {
               heroes[turnIndex].actionItem = selectedItem;
               menuCursor = $('#cursor').detach();
               canvasCursor.index = 0;
-              canvasCursor.loc = 1;
+              if (selectedItem.affects == "hero") {
+                canvasCursor.loc = 1;
+              } else {
+                canvasCursor.loc = 2
+              }
               resetSubmenu();
 	    }
             break;
@@ -229,18 +233,22 @@ function nextHero () {
 function updateSubmenu (selectedAction) {
     if (selectedAction == "item") {
         $('#subaction-1').text(consumables[0].name);
-        menuContent[0] = consumables[0].name;
+        menuContent[0] = consumables[0];
         $('#subaction-2').text(consumables[1].name);
-        menuContent[1] = consumables[1].name;
+        menuContent[1] = consumables[1];
         $('#subaction-3').text(consumables[2].name);
-        menuContent[2] = consumables[2].name;
+        menuContent[2] = consumables[2];
         $('#subaction-4').text(consumables[3].name);
-        menuContent[3] = consumables[3].name;
+        menuContent[3] = consumables[3];
     }else if(selectedAction == "spell"){
         $('#subaction-1').text(spells[0].name);
+        menuContent[0] = spells[0];
         $('#subaction-2').text(spells[1].name);
+        menuContent[1] = spells[1];
         $('#subaction-3').text(spells[2].name);
+        menuContent[2] = spells[2];
         $('#subaction-4').text(spells[3].name);
+        menuContent[3] = spells[3];
     };
 }
 
