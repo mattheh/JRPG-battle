@@ -1,6 +1,3 @@
-//avg health: 100
-//avg attack: 25
-//avg run %: 30
 var consumables = [
     {name: "Potion",
 	 description: "Restores 50 HP",

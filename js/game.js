@@ -15,6 +15,8 @@ var RIGHT_KEY = 68;//D
 var A_KEY = 188; //  ,
 var B_KEY = 76;//    l
 var SPACE_KEY = 32;// space bar
+var battleMenu = ["fight", "item", "spell", "run"];
+var subMenu = ["subaction-1", "subaction-2", "subaction-3", "subaction-4"];
 
 var imgPath = "assets/images/";
 var imgExtension = ".png";
@@ -29,11 +31,10 @@ var bgImage;
 var menuImage;
 var heroes = [];
 var monsters = [];
-var battleMenu = ["fight", "item", "spell", "run"];
-var subMenu = ["subaction-1", "subaction-2", "subaction-3", "subaction-4"];
 var turnIndex = 0;
 var canvasCursor;
 var menuCursor;
+var menuContent = [];
 
 
 //===================================
@@ -203,6 +204,8 @@ function updateCursor (keyCode) {
               canvasCursor.loc = 0;
 	    }
 	    if (keyCode == A_KEY) { // Player presses ','
+              var selectedItem = menuContent[canvasCursor.index % 4];
+              heroes[turnIndex].actionItem = selectedItem;
               menuCursor = $('#cursor').detach();
               canvasCursor.index = 0;
               canvasCursor.loc = 1;
@@ -223,18 +226,22 @@ function nextHero () {
 
 }
 
-function updateSubmenu(selectedAction){
-    if(selectedAction == "item"){
+function updateSubmenu (selectedAction) {
+    if (selectedAction == "item") {
         $('#subaction-1').text(consumables[0].name);
+        menuContent[0] = consumables[0].name;
         $('#subaction-2').text(consumables[1].name);
+        menuContent[1] = consumables[1].name;
         $('#subaction-3').text(consumables[2].name);
+        menuContent[2] = consumables[2].name;
         $('#subaction-4').text(consumables[3].name);
+        menuContent[3] = consumables[3].name;
     }else if(selectedAction == "spell"){
-        $('#subaction-1').text('Fireball');
-        $('#subaction-2').text('Energy shield');
-        $('#subaction-3').text('Deep freeze');
-        $('#subaction-4').text('Confusion');
-    }
+        $('#subaction-1').text(spells[0].name);
+        $('#subaction-2').text(spells[1].name);
+        $('#subaction-3').text(spells[2].name);
+        $('#subaction-4').text(spells[3].name);
+    };
 }
 
 function resetSubmenu(){

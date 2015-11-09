@@ -125,7 +125,9 @@ function heroObject(heroClass) {
   this.heroClass = heroClass.class;
   this.state = "idle";
   this.action;
+  this.actionItem;  // If this.action is spell or item, which spell/item is used
   this.target;
+
   heroImage.src = imgPath + "heroes/" + heroClass.class + "_" + this.state + imgExtension;
   
   return this;
