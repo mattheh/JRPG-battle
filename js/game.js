@@ -14,6 +14,7 @@ var DOWN_KEY = 83;// S
 var RIGHT_KEY = 68;//D
 var A_KEY = 188; //  ,
 var B_KEY = 76;//    l
+var SPACE_KEY = 32;// space bar
 //===================================
 // VARIABLES
 //===================================
@@ -175,7 +176,7 @@ function resetSubmenu(){
 /*-----Update-----*/
 
 function updateMenu () {
-	if (32 in keysDown) { // Player presses space
+	if (SPACE_KEY in keysDown) { // Player presses space
 		state = "game";
         initialize();
         canvas.height = 480;
