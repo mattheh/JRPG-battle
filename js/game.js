@@ -15,6 +15,9 @@ var RIGHT_KEY = 68;//D
 var A_KEY = 188; //  ,
 var B_KEY = 76;//    l
 var SPACE_KEY = 32;// space bar
+
+var imgPath = "assets/images/";
+var imgExtension = ".png";
 //===================================
 // VARIABLES
 //===================================

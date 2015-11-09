@@ -91,7 +91,7 @@ function heroObject(heroClass) {
   this.charType = "hero";
   // Create sprite sheet
   var heroImage = new Image();
-  heroImage.src = heroClass.img;
+  heroImage.src = imgPath + "heroes/" + heroClass.class + "_" + "idle" + imgExtension;
 
   // Create Hero sprite object
   spriteObject.call(this, {
@@ -125,7 +125,7 @@ function monsterObject(monsterClass) {
     this.charType = "monster";
   // Create sprite sheet
   var monsterImage = new Image();
-  monsterImage.src = monsterClass.img;
+  monsterImage.src = imgPath + "monsters/" + monsterClass.class + imgExtension;
 
   // Create Monster sprite object
   spriteObject.call(this, {
