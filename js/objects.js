@@ -109,6 +109,7 @@ function heroObject(heroClass) {
   this.health = heroClass.health;
   this.totalHealth = heroClass.health;
   this.attack = heroClass.attack;
+  this.runChance = heroClass.run;
   this.x = 20;
   this.y = 100 + heroes.length * 100;
   this.heroClass = heroClass.class;
