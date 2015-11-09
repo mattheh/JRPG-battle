@@ -12,6 +12,18 @@ function cursorObject() {
 
   this.render = function () {
     // Draw the animation
+    if (this.loc == 1) {
+    ctx.drawImage(
+      cursorImage,
+      0,
+      0,
+      35,
+      35,
+      heroes[this.index].x + 75,
+      heroes[this.index].y + 25,
+      35,
+      35
+      )};
     if (this.loc == 2) {
     ctx.drawImage(
       cursor2Image,

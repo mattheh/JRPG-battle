@@ -120,6 +120,26 @@ function updateCursor (keyCode) {
 	    }
             break;
           case 1:               // Hero Area
+	    if (keyCode == UP_KEY) { // Player presses 'w'
+              canvasCursor.index -= 1;
+              if (canvasCursor.index < 0) {
+                canvasCursor.index = canvasCursor.index + heroes.length;
+              }
+	    }
+	    if (keyCode == DOWN_KEY) { // Player presses 's'
+              canvasCursor.index = (canvasCursor.index + 1) % heroes.length;
+	    }
+	    if (keyCode == B_KEY) { // Player presses 'l'
+              $('#fight-action').append(menuCursor);
+              resetSubmenu();
+              canvasCursor.index = 0;
+              canvasCursor.loc = 0;
+	    }
+	    if (keyCode == A_KEY) { // Player presses ','
+              heroes[turnIndex].target = heroes[canvasCursor.index];
+              nextHero();
+              resetSubmenu();
+	    }
             break;
           case 2:               //  Monster Area
 	    if (keyCode == UP_KEY) { // Player presses 'w'
@@ -182,6 +202,12 @@ function updateCursor (keyCode) {
               canvasCursor.index = 0;
               canvasCursor.loc = 0;
 	    }
+	    if (keyCode == A_KEY) { // Player presses ','
+              menuCursor = $('#cursor').detach();
+              canvasCursor.index = 0;
+              canvasCursor.loc = 1;
+              resetSubmenu();
+	    }
             break;
 
         }
@@ -199,10 +225,10 @@ function nextHero () {
 
 function updateSubmenu(selectedAction){
     if(selectedAction == "item"){
-        $('#subaction-1').text('Health potion');
-        $('#subaction-2').text('Herb');
-        $('#subaction-3').text('Antidote');
-        $('#subaction-4').text('Powerup');
+        $('#subaction-1').text(consumables[0].name);
+        $('#subaction-2').text(consumables[1].name);
+        $('#subaction-3').text(consumables[2].name);
+        $('#subaction-4').text(consumables[3].name);
     }else if(selectedAction == "spell"){
         $('#subaction-1').text('Fireball');
         $('#subaction-2').text('Energy shield');
