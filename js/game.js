@@ -31,6 +31,7 @@ var bgImage;
 var menuImage;
 var heroes = [];
 var monsters = [];
+var fightExecutor;
 var turnIndex = 0;
 var canvasCursor;
 var menuCursor;
@@ -220,15 +221,48 @@ function updateCursor (keyCode) {
         }
         
 }
+
 function nextHero () {
         $('#fight-action').append(menuCursor);
         heroes[turnIndex].x = heroes[turnIndex].x - 75;
         turnIndex += 1;
+        if(turnIndex >=heroes.length){
+            currentRoundFight();
+            return;
+        }
         heroes[turnIndex].x = heroes[turnIndex].x + 75;
         canvasCursor.index = 0;
         canvasCursor.loc = 0;
 
 }
+
+//===================================
+// FIGHT LOGIC
+//===================================
+
+function currentRoundFight(){
+    for(var i=0;i<fightExecutor.combatants.length;i++){
+        var combatant = fightExecutor.combatants[i];
+        if(combatant.charType == "hero"){
+            if(combatant.action == "fight"){
+             combatant.target.currentHealth = combatant.target.currentHealth - combatant.attack;
+                
+            }
+        }
+        else{
+         //TODO: Monster retaliation.   
+        }
+    }
+    resetRound();
+}
+
+function resetRound(){
+    turnIndex = 0;
+    heroes[turnIndex].x = heroes[turnIndex].x + 75;
+    canvasCursor.index = 0;
+    canvasCursor.loc = 0;
+}
+/**************END FIGHT LOGIC **************/
 
 function updateSubmenu (selectedAction) {
     if (selectedAction == "item") {
@@ -274,6 +308,9 @@ var updateGame = function (modifier) {
         }
         for (var i = 0; i < heroes.length; i++){
           heroes[i].update();
+        }
+        for (var i = 0; i < monsters.length; i++){
+          monsters[i].update();
         }
 	if (87 in keysDown) { // Player holding up
 	}
@@ -327,6 +364,7 @@ function renderGame () {
 var initialize = function () {
         resetGame();
         canvasCursor = new cursorObject();
+        fightExecutor = new fightExecutor();
         for(var i=0;i<heroClasses.length;i++){  
           var hero = new heroObject(heroClasses[i]);
           heroes.push(hero);
@@ -336,6 +374,7 @@ var initialize = function () {
           monster = new monsterObject(monsterClasses[i%2]);
           monsters.push(monster);
         }
+        fightExecutor.combatants = heroes.concat(monsters);
 };
 
 var resetGame = function () {

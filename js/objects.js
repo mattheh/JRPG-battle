@@ -61,8 +61,8 @@ function spriteObject (options) {
 
   
   this.update = function () {
+    // sprites
     this.tickCount += 1;
-
     if (this.tickCount > this.ticksPerFrame) {
       this.tickCount = 0;
       // If the current frame index is in range
@@ -73,6 +73,19 @@ function spriteObject (options) {
         this.frameIndex = 0;
       }
     }
+      
+    //character state
+      var lastState = this.state;
+      if(this.currentHealth == 0)
+          this.state = "dead";
+      else if(this.currentHealth < this.totalHealth*0.4)
+          this.state = "weak";
+      if(lastState != this.state){
+          //TODO:: add monster img states.
+          /*this.image = new Image();
+          this.image.src = imgPath + this.charType + "/" + this.class + "_" + this.state + imgExtension;*/
+      }
+      
   }
   
   this.render = function () {
@@ -93,8 +106,10 @@ function spriteObject (options) {
       var hpTextWidth = 60;
       var hpBarWidth = hpTextWidth + 20;
       var hpBarHeight = 20;
-      var currentHPBar = (this.health/this.totalHealth)*hpBarWidth;
-      var missingHPBar = (1-(this.health/this.totalHealth))*hpBarWidth;
+      this.currentHealth = Math.min(Math.max(this.currentHealth,0),this.totalHealth);
+      
+      var currentHPBar = (this.currentHealth/this.totalHealth)*hpBarWidth;
+      var missingHPBar = (1-(this.currentHealth/this.totalHealth))*hpBarWidth;
       this.context.fillStyle="#FFFFFF";
       this.context.strokeRect(centerX-hpBarWidth/2,this.y-hpBarHeight,hpBarWidth,hpBarHeight);
       this.context.fillStyle="#448F30";
@@ -104,7 +119,7 @@ function spriteObject (options) {
       this.context.font="16px Courier";
       this.context.fillStyle="#FFFFFF";
       this.context.textAlign="center";
-      this.context.fillText(this.health + "/" + this.totalHealth, centerX, this.y-hpBarHeight, hpTextWidth);
+      this.context.fillText(this.currentHealth + "/" + this.totalHealth, centerX, this.y-hpBarHeight, hpTextWidth);
       
   };
 
@@ -127,20 +142,13 @@ function heroObject(heroClass) {
     resize_y: 75
   });
   // Add hero-like attributes
-  if(heroClass.class == "warrior")
-    this.health = Math.floor(heroClass.health/4);
-  if(heroClass.class == "blackbelt")
-    this.health = Math.floor(heroClass.health/2);
-  if(heroClass.class == "thief")
-    this.health = Math.floor(heroClass.health/3);
-  if(heroClass.class == "blackmage")
-    this.health = Math.floor(heroClass.health - 10);
   this.totalHealth = heroClass.health;
+  this.currentHealth = heroClass.health;
   this.attack = heroClass.attack;
   this.runChance = heroClass.run;
   this.x = 20;
   this.y = 100 + heroes.length * 100;
-  this.heroClass = heroClass.class;
+  this.class = heroClass.class;
   this.state = "walking";
   this.action;
   this.actionItem;  // If this.action is spell or item, which spell/item is used
@@ -170,12 +178,24 @@ function monsterObject(monsterClass) {
   });
   // Add monster-like attributes
   
-  this.health = monsterClass.health;
+  this.currentHealth = monsterClass.health;
   this.totalHealth = monsterClass.health;
   this.attack = monsterClass.attack;
   this.x = 500 + (150 * (monsters.length % 2));
   this.y = 100 + ((Math.floor(monsters.length / 2)) * 125);
-  this.monsterClass = monsterClass.class;
-  
+  this.class = monsterClass.class;
+  this.state = "idle";
+  this.action;
+  this.target;
   return this;
+}
+
+function fightExecutor(){
+    var combatants = [];
+    
+    this.orderCombatants = function(){
+     //TODO: order combatants based on agility.   
+    }
+    
+    
 }
