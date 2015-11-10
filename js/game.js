@@ -355,9 +355,11 @@ function renderGame () {
     
         for (var i = 0; i < heroes.length; i++){
           heroes[i].render();
+          heroes[i].renderHealth();
         }
         for (var i = 0; i < monsters.length; i++){
           monsters[i].render();
+          monsters[i].renderHealth();
         }
 
         //render cursor

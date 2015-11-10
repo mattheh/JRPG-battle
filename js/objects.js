@@ -11,38 +11,37 @@ function cursorObject() {
   this.index = 0;
 
   this.render = function () {
-    // Draw the animation
+  // Draw the animation
     if (this.loc == 1) {
-    ctx.drawImage(
-      cursorImage,
-      0,
-      0,
-      35,
-      35,
-      heroes[this.index].x + 75,
-      heroes[this.index].y + 25,
-      35,
-      35
-      )};
-    if (this.loc == 2) {
-    ctx.drawImage(
-      cursor2Image,
-      0,
-      0,
-      35,
-      35,
-      monsters[this.index].x - 35,
-      monsters[this.index].y + 35,
-      35,
-      35
-      );
-    };
-  };
+      ctx.drawImage(
+          cursorImage,
+          0,
+          0,
+          35,
+          35,
+          heroes[this.index].x + 75,
+          heroes[this.index].y + 25,
+          35,
+          35
+          )};
+      if (this.loc == 2) {
+        ctx.drawImage(
+          cursor2Image,
+          0,
+          0,
+          35,
+          35,
+          monsters[this.index].x - 35,
+          monsters[this.index].y + 35,
+          35,
+          35
+          );
+       };
+   };
 
   return this;
 
-}
-
+};
 function spriteObject (options) {
   baseObject.call(this);         
   this.frameIndex = 0;
@@ -100,6 +99,23 @@ function spriteObject (options) {
       this.resize_x,
       this.resize_y
       );
+  };
+
+  return this;
+}
+
+function unitObject(unitImage) {
+  spriteObject.call(this, {
+    ticksPerFrame: 32,
+    numberOfFrames: 2,
+    context: canvas.getContext("2d"),
+    width: 59,
+    height: 42,
+    image: unitImage,
+    resize_x: 75,
+    resize_y: 75
+  });
+  this.renderHealth = function () {
       /** health bar */
       var centerX = this.x + (this.resize_x)/2;
       var hpTextWidth = 60;
@@ -119,27 +135,18 @@ function spriteObject (options) {
       this.context.fillStyle="#FFFFFF";
       this.context.textAlign="center";
       this.context.fillText(this.currentHealth + "/" + this.totalHealth, centerX, this.y-hpBarHeight, hpTextWidth);
-      
-  };
+  };      
 
   return this;
 }
 
 function heroObject(heroClass) {
   this.charType = "hero";
-  // Create sprite sheet
   var heroImage = new Image();
-  // Create Hero sprite object
-  spriteObject.call(this, {
-    ticksPerFrame: 32,
-    numberOfFrames: 2,
-    context: canvas.getContext("2d"),
-    width: 59,
-    height: 42,
-    image: heroImage,
-    resize_x: 75,
-    resize_y: 75
-  });
+
+  // Call Unit Object
+  unitObject.call(this, heroImage);
+
   // Add hero-like attributes
   this.totalHealth = heroClass.health;
   this.currentHealth = heroClass.health;
@@ -159,24 +166,18 @@ function heroObject(heroClass) {
 }
 
 function monsterObject(monsterClass) {
-    this.charType = "monster";
-  // Create sprite sheet
+  this.charType = "monster";
   var monsterImage = new Image();
   monsterImage.src = imgPath + "monsters/" + monsterClass.class + imgExtension;
 
-  // Create Monster sprite object
-  spriteObject.call(this, {
-    ticksPerFrame: 0,
-    numberOfFrames: 1,
-    context: canvas.getContext("2d"),
-    width: 44,
-    height: 44,
-    image: monsterImage,
-    resize_x: 125,
-    resize_y: 125
-  });
+  // Call Unit Object
+  unitObject.call(this, monsterImage);
+  this.numberOfFrames = 1;
+  this.width = 44;
+  this.height = 44;
+  this.resize_x = 125;
+  this.resize_y = 125;
   // Add monster-like attributes
-  
   this.currentHealth = monsterClass.health;
   this.totalHealth = monsterClass.health;
   this.attack = monsterClass.attack;
