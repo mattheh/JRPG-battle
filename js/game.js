@@ -272,6 +272,9 @@ var updateGame = function (modifier) {
           //BEGIN BATTLE SEQUENCE
         
         }
+        for (var i = 0; i < heroes.length; i++){
+          heroes[i].update();
+        }
 	if (87 in keysDown) { // Player holding up
 	}
 	if (83 in keysDown) { // Player holding down

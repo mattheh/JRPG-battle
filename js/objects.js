@@ -78,7 +78,11 @@ function spriteObject (options) {
   this.render = function () {
     // Draw the animation
     this.context.drawImage(
-      this.image,
+      this.image, 
+      this.frameIndex * this.width / this.numberOfFrames,
+      0,
+      this.width / this.numberOfFrames,
+      this.height,
       this.x,
       this.y,
       this.resize_x,
@@ -113,11 +117,11 @@ function heroObject(heroClass) {
   var heroImage = new Image();
   // Create Hero sprite object
   spriteObject.call(this, {
-    ticksPerFrame: 0,
-    numberOfFrames: 1,
+    ticksPerFrame: 32,
+    numberOfFrames: 2,
     context: canvas.getContext("2d"),
-    width: 44,
-    height: 44,
+    width: 59,
+    height: 42,
     image: heroImage,
     resize_x: 75,
     resize_y: 75
@@ -137,7 +141,7 @@ function heroObject(heroClass) {
   this.x = 20;
   this.y = 100 + heroes.length * 100;
   this.heroClass = heroClass.class;
-  this.state = "idle";
+  this.state = "walking";
   this.action;
   this.actionItem;  // If this.action is spell or item, which spell/item is used
   this.target;
