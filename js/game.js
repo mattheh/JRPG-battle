@@ -245,17 +245,26 @@ function currentRoundFight(){
         var combatant = fightExecutor.combatants[i];
         if(combatant.charType == "hero"){
             if(combatant.action == "fight"){
-             combatant.target.currentHealth = combatant.target.currentHealth - combatant.attack;
+             combatant.target.currentHealth = combatant.target.currentHealth - randomAttack(combatant.attack);
                 
             }
         }
-        else{
-            var randHeroIndex = Math.floor((Math.random() * heroes.length-1) + 1);
+        else{//monster
+            var rand = Math.random();
+            var randHeroIndex = Math.floor(rand * heroes.length);
             var heroToAttack = heroes[randHeroIndex];
-            heroToAttack.currentHealth = heroToAttack.currentHealth - combatant.attack;
+            heroToAttack.currentHealth = heroToAttack.currentHealth - randomAttack(combatant.attack);
         }
     }
     resetRound();
+}
+
+//attack + 20% margin
+function randomAttack(attack){
+    var plusOrMinus = Math.random() > 0.5 ? -1 : 1;
+    var margin = Math.random() * (attack*0.2);
+    attack = attack + Math.floor(margin* plusOrMinus);
+    return attack;
 }
 
 function resetRound(){
