@@ -227,7 +227,6 @@ function nextHero () {
         heroes[turnIndex].x = heroes[turnIndex].x - 75;
         turnIndex += 1;
         if(turnIndex >=heroes.length){
-            currentRoundFight();
             return;
         }
         heroes[turnIndex].x = heroes[turnIndex].x + 75;
@@ -315,7 +314,7 @@ function updateMenu () {
 var updateGame = function (modifier) {
         if (turnIndex == heroes.length) {
           //BEGIN BATTLE SEQUENCE
-        
+            currentRoundFight();
         }
         for (var i = 0; i < heroes.length; i++){
           heroes[i].update();

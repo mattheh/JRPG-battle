@@ -58,4 +58,5 @@ canvas{
     position: absolute;
     top: 50%;
     margin-top: -15px;  /* = image height div 2 */
+    transform: translateX(10px);
 }
