@@ -80,10 +80,9 @@ function spriteObject (options) {
           this.state = "dead";
       else if(this.currentHealth < this.totalHealth*0.4)
           this.state = "weak";
-      if(lastState != this.state){
-          //TODO:: add monster img states.
-          /*this.image = new Image();
-          this.image.src = imgPath + this.charType + "/" + this.class + "_" + this.state + imgExtension;*/
+      if(lastState != this.state && this.charType == "hero"){//monsters don't have another imgs
+          this.image = new Image();
+          this.image.src = imgPath + "heroes/" + this.class + "_" + this.state + imgExtension;
       }
       
   }

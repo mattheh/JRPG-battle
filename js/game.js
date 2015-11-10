@@ -250,7 +250,9 @@ function currentRoundFight(){
             }
         }
         else{
-         //TODO: Monster retaliation.   
+            var randHeroIndex = Math.floor((Math.random() * heroes.length-1) + 1);
+            var heroToAttack = heroes[randHeroIndex];
+            heroToAttack.currentHealth = heroToAttack.currentHealth - combatant.attack;
         }
     }
     resetRound();
