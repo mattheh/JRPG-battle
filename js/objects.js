@@ -86,13 +86,21 @@ function spriteObject (options) {
       );
       /** health bar */
       var centerX = this.x + (this.resize_x)/2;
+      var hpTextWidth = 60;
+      var hpBarWidth = hpTextWidth + 20;
+      var hpBarHeight = 20;
+      var currentHPBar = (this.health/this.totalHealth)*hpBarWidth;
+      var missingHPBar = (1-(this.health/this.totalHealth))*hpBarWidth;
       this.context.fillStyle="#FFFFFF";
-      this.context.strokeRect(centerX-35,this.y-21,72,22);
+      this.context.strokeRect(centerX-hpBarWidth/2,this.y-hpBarHeight,hpBarWidth,hpBarHeight);
       this.context.fillStyle="#448F30";
-      this.context.fillRect(centerX-34,this.y-20, 70, 20);
+      this.context.fillRect(centerX-hpBarWidth/2,this.y-hpBarHeight, currentHPBar,hpBarHeight);
+      this.context.fillStyle="#801515";
+      this.context.fillRect(centerX-hpBarWidth/2 + currentHPBar,this.y-hpBarHeight, missingHPBar,hpBarHeight);
       this.context.font="16px Courier";
       this.context.fillStyle="#FFFFFF";
-      this.context.fillText(this.health + "/" + this.totalHealth, centerX-30, this.y-18, 60);
+      this.context.textAlign="center";
+      this.context.fillText(this.health + "/" + this.totalHealth, centerX, this.y-hpBarHeight, hpTextWidth);
       
   };
 
@@ -115,8 +123,14 @@ function heroObject(heroClass) {
     resize_y: 75
   });
   // Add hero-like attributes
-  
-  this.health = heroClass.health;
+  if(heroClass.class == "warrior")
+    this.health = Math.floor(heroClass.health/4);
+  if(heroClass.class == "blackbelt")
+    this.health = Math.floor(heroClass.health/2);
+  if(heroClass.class == "thief")
+    this.health = Math.floor(heroClass.health/3);
+  if(heroClass.class == "blackmage")
+    this.health = Math.floor(heroClass.health - 10);
   this.totalHealth = heroClass.health;
   this.attack = heroClass.attack;
   this.runChance = heroClass.run;
