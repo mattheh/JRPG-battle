@@ -361,9 +361,15 @@ var updateGame = function (modifier) {
         };
         for (var i = 0; i < heroes.length; i++){
           heroes[i].update();
+          if (heroes[i].health <= 0) {
+
+          }
         }
         for (var i = 0; i < monsters.length; i++){
           monsters[i].update();
+          if (monsters[i].currentHealth <= 0) {
+            monsters.splice(i, 1)
+          }
         }
 	if (87 in keysDown) { // Player holding up
 	}
