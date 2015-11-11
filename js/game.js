@@ -81,7 +81,7 @@ function loadAssets () {
 }
 function updateCursor (keyCode) {
         switch (canvasCursor.loc) {
-          case 0: 
+          case 0: //menu
 	    if (keyCode == UP_KEY) { // Player presses 'w'
               canvasCursor.index -= 1;
               if (canvasCursor.index < 0) {
@@ -107,18 +107,8 @@ function updateCursor (keyCode) {
 	    if (keyCode == A_KEY) { // Player presses ','
               var selectedAction = battleMenu[canvasCursor.index];
               heroes[turnIndex].action = selectedAction;
-              menuCursor = $('#cursor').detach();
               canvasCursor.index = 0;
-              if(selectedAction == "fight")
-                  canvasCursor.loc = 2;
-              if(selectedAction == "item" || selectedAction == "spell") {
-                  updateSubmenu(selectedAction);
-                  canvasCursor.index = 4;
-                  $('#subaction-1').append(menuCursor);
-                  canvasCursor.loc = 3;
-              }
-              if(selectedAction == "run")
-                  nextHero();
+              updateSubmenu(selectedAction,heroes[turnIndex]);
 	    }
             break;
           case 1:               // Hero Area
@@ -243,10 +233,33 @@ function nextHero () {
 function currentRoundFight(){
     for(var i=0;i<fightExecutor.combatants.length;i++){
         var combatant = fightExecutor.combatants[i];
+        var target = combatant.target;
         if(combatant.charType == "hero"){
             if(combatant.action == "fight"){
-             combatant.target.currentHealth = combatant.target.currentHealth - randomAttack(combatant.attack);
-                
+             target.currentHealth -= randomAttack(combatant.attack);
+            }
+            else if(combatant.action == "spell"){
+                var spell = combatant.actionItem;
+                if(target.charType == "monster"){
+                    if(spell.name == "Fira"){
+                        for(var i=0;i<monsters.length;i++)
+                            monsters[i].currentHealth -= spell.value;
+                    }
+                    else{//single target spell
+                        target.currentHealth -= combatant.actionItem.value;
+                    }
+                }
+                else if(combatant.target.charType =="hero"){
+                    if(spell.name == "Temper"){
+                        target.attack += combatant.actionItem.value;   
+                    }
+                }
+            }
+            else if(combatant.action == "item"){
+             var item = combatant.actionItem;
+                if(item.name.toLowerCase().indexOf("potion") != -1){
+                  target.currentHealth += item.value;   
+                }
             }
         }
         else{//monster
@@ -275,8 +288,18 @@ function resetRound(){
 }
 /**************END FIGHT LOGIC **************/
 
-function updateSubmenu (selectedAction) {
-    if (selectedAction == "item") {
+function updateSubmenu (selectedAction, currentHero) {
+    if(selectedAction == "fight"){
+        canvasCursor.loc = 2;
+        menuCursor = $('#cursor').detach();
+        $('#subaction-1').text("Attack: " + currentHero.attack);
+        return;
+      }
+    else if(selectedAction == "run"){
+        nextHero();
+        return;
+    }
+    else if (selectedAction == "item") {
         $('#subaction-1').text(consumables[0].name);
         menuContent[0] = consumables[0];
         $('#subaction-2').text(consumables[1].name);
@@ -285,16 +308,23 @@ function updateSubmenu (selectedAction) {
         menuContent[2] = consumables[2];
         $('#subaction-4').text(consumables[3].name);
         menuContent[3] = consumables[3];
-    }else if(selectedAction == "spell"){
-        $('#subaction-1').text(spells[0].name);
-        menuContent[0] = spells[0];
-        $('#subaction-2').text(spells[1].name);
-        menuContent[1] = spells[1];
-        $('#subaction-3').text(spells[2].name);
-        menuContent[2] = spells[2];
-        $('#subaction-4').text(spells[3].name);
-        menuContent[3] = spells[3];
-    };
+    }else if(selectedAction == "spell" && currentHero.spell != undefined){
+        $('#subaction-1').text(currentHero.spell[0].name);
+        menuContent[0] = currentHero.spell[0];
+        $('#subaction-2').text(currentHero.spell[1].name);
+        menuContent[1] = currentHero.spell[1];
+        $('#subaction-3').text(currentHero.spell[2].name);
+        menuContent[2] = currentHero.spell[2];
+        $('#subaction-4').text(currentHero.spell[3].name);
+        menuContent[3] = currentHero.spell[3];
+    }else{
+        canvasCursor.index = 2;//stay on spell, don't do anything
+        return;   
+    }
+  menuCursor = $('#cursor').detach();
+  canvasCursor.index = 4;
+  $('#subaction-1').append(menuCursor);
+  canvasCursor.loc = 3;
 }
 
 function resetSubmenu(){

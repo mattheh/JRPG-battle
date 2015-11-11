@@ -1,18 +1,22 @@
 var spells = [
     {name: "Fire",
 	 description: "Minor fire damage to 1 enemy",
-         targets: 1,
-	 affects: "monster"},
+     targets: 1,
+	 affects: "monster",
+     value: 20 },
     {name: "Thunder",
 	 description: "Minor lightning damage to 1 enemy",
          targets: 1,
-	 affects: "monster"},
+	 affects: "monster",
+    value: 25 },
     {name: "Temper",
 	 description: "Increase damage temporarily",
          targets: 1,
-	 affects: "hero"},
+	 affects: "hero",
+    value: 20},
     {name: "Fira",
 	 description: "Moderate fire damage to all enemies",
          targets: -1,
-	 affects: "monster"}
+	 affects: "monster",
+    value: 30}
     ]

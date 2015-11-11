@@ -1,13 +1,15 @@
 var consumables = [
     {name: "Potion",
 	 description: "Restores 50 HP",
-	 affects: "hero"},
+	 affects: "hero",
+     value:50},
     {name: "Antidote",
 	 description: "Cures Poison",
 	 affects: "hero"},
     {name: "Hi-Potion",
 	 description: "Restores 150 HP",
-	 affects: "hero"},
+	 affects: "hero",
+     value:150},
     {name: "Gold Needle",
 	 description: "Cures Petrify",
 	 affects: "hero"}
