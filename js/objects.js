@@ -106,11 +106,11 @@ function spriteObject (options) {
 
 function unitObject(unitImage) {
   spriteObject.call(this, {
-    ticksPerFrame: 32,
-    numberOfFrames: 2,
+    ticksPerFrame: 16,
+    numberOfFrames: 1,
     context: canvas.getContext("2d"),
-    width: 59,
-    height: 42,
+    width: 32,
+    height: 40,
     image: unitImage,
     resize_x: 75,
     resize_y: 75
@@ -155,13 +155,35 @@ function heroObject(heroClass) {
   this.x = 20;
   this.y = 100 + heroes.length * 100;
   this.class = heroClass.class;
-  this.state = "walking";
+  this.state = "idle";
   this.action;
   this.actionItem;  // If this.action is spell or item, which spell/item is used
   this.target;
 
   heroImage.src = imgPath + "heroes/" + heroClass.class + "_" + this.state + imgExtension;
   
+  this.animate = function (action) {
+    switch (action) { 
+      case "stepForward":
+        this.image.src = imgPath + "heroes/" + this.class + "_walking.png"
+        this.numberOfFrames = 2;
+        this.width = 58;
+        if (this.x <=75) {
+          this.x += 3;
+        }
+        break;
+      case "stepBack":
+        if (this.x >= 20) {
+          this.x -= 3;
+        } else {
+          this.image.src = imgPath + "heroes/" + this.class + "_idle.png"
+          this.numberOfFrames = 1;
+          this.width = 32;
+        }
+        break;
+
+    };
+  }
   return this;
 }
 

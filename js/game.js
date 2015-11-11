@@ -224,12 +224,13 @@ function updateCursor (keyCode) {
 
 function nextHero () {
         $('#fight-action').append(menuCursor);
-        heroes[turnIndex].x = heroes[turnIndex].x - 75;
+        //heroes[turnIndex].x = heroes[turnIndex].x - 75;
+        updateGame();
         turnIndex += 1;
-        if(turnIndex >=heroes.length){
+        if(turnIndex >= heroes.length){
             return;
         }
-        heroes[turnIndex].x = heroes[turnIndex].x + 75;
+        //heroes[turnIndex].x = heroes[turnIndex].x + 75;
         canvasCursor.index = 0;
         canvasCursor.loc = 0;
 
@@ -312,10 +313,18 @@ function updateMenu () {
 }
 
 var updateGame = function (modifier) {
-        if (turnIndex == heroes.length) {
-          //BEGIN BATTLE SEQUENCE
+        if (turnIndex == heroes.length && heroes[3].x == 20) {
             currentRoundFight();
-        }
+        };
+        
+        if (turnIndex < heroes.length){
+
+          if (typeof heroes[turnIndex].target === 'undefined') {
+            heroes[turnIndex].state = "stepForward"
+          } else {
+            heroes[turnIndex].state = "stepBack"
+          };
+        };
         for (var i = 0; i < heroes.length; i++){
           heroes[i].update();
         }
@@ -356,7 +365,9 @@ function renderGame () {
         for (var i = 0; i < heroes.length; i++){
           heroes[i].render();
           heroes[i].renderHealth();
+          heroes[i].animate(heroes[i].state);
         }
+        heroes[2].animate();
         for (var i = 0; i < monsters.length; i++){
           monsters[i].render();
           monsters[i].renderHealth();
@@ -381,7 +392,7 @@ var initialize = function () {
           var hero = new heroObject(heroClasses[i]);
           heroes.push(hero);
         }
-        heroes[turnIndex].x = heroes[turnIndex].x + 75
+        //heroes[turnIndex].x = heroes[turnIndex].x + 75
         for(var i=0;i<6;i++){  
           monster = new monsterObject(monsterClasses[i%2]);
           monsters.push(monster);
