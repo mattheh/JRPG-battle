@@ -18,18 +18,18 @@ var heroClasses = [
 	 },
     {class: "blackmage",
 	 health: 70,
-	 attack: 15,
+	 attack: 10,
      run: 40,
-	 },
+	 spell: spells},
     ]
 
 var monsterClasses = [
     {class: "imp",
-	 health: 25,
-	 attack: 15,
+	 health: 75,
+	 attack: 20,
 	 },
     {class: "wolf",
-	 health: 20,
-	 attack: 20,
+	 health: 50,
+	 attack: 25,
 	 }
     ]

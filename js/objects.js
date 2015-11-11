@@ -73,17 +73,6 @@ function spriteObject (options) {
       }
     }
       
-    //character state
-      var lastState = this.state;
-      if(this.currentHealth == 0)
-          this.state = "dead";
-      else if(this.currentHealth < this.totalHealth*0.4)
-          this.state = "weak";
-      if(lastState != this.state && this.charType == "hero"){//monsters don't have another imgs
-          this.image = new Image();
-          this.image.src = imgPath + "heroes/" + this.class + "_" + this.state + imgExtension;
-      }
-      
   }
   
   this.render = function () {
@@ -115,6 +104,21 @@ function unitObject(unitImage) {
     resize_x: 75,
     resize_y: 75
   });
+    
+          
+    //character state
+      var lastState = this.state;
+      if(this.currentHealth <= 0){
+          this.currentHealth == 0;
+          this.state = "dead";
+      }
+      else if(this.currentHealth < this.totalHealth*0.4)
+          this.state = "weak";
+      if(lastState != this.state && this.charType == "hero"){//monsters don't have another imgs
+          this.image = new Image();
+          this.image.src = imgPath + "heroes/" + this.class + "_" + this.state + imgExtension;
+      }
+    
   this.renderHealth = function () {
       /** health bar */
       var centerX = this.x + (this.resize_x)/2;
@@ -156,6 +160,7 @@ function heroObject(heroClass) {
   this.y = 100 + heroes.length * 100;
   this.class = heroClass.class;
   this.state = "walking";
+  this.spell = heroClass.spell;
   this.action;
   this.actionItem;  // If this.action is spell or item, which spell/item is used
   this.target;
