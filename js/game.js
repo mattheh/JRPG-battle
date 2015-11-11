@@ -283,6 +283,10 @@ function randomAttack(attack){
 function resetRound(){
     turnIndex = 0;
     heroes[turnIndex].x = heroes[turnIndex].x + 75;
+    for(var i=0;i<heroClasses.length;i++){  
+      delete heroes[i].target;
+    }
+    
     canvasCursor.index = 0;
     canvasCursor.loc = 0;
 }
