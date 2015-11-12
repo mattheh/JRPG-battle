@@ -4,44 +4,6 @@
 
 function baseObject () {
 }
-
-function cursorObject() {
-  baseObject.call(this);
-  this.loc = 0;
-  this.index = 0;
-
-  this.render = function () {
-  // Draw the animation
-    if (this.loc == 1) {
-      ctx.drawImage(
-          cursorImage,
-          0,
-          0,
-          35,
-          35,
-          heroes[this.index].x + 75,
-          heroes[this.index].y + 25,
-          35,
-          35
-          )};
-      if (this.loc == 2) {
-        ctx.drawImage(
-          cursor2Image,
-          0,
-          0,
-          35,
-          35,
-          monsters[this.index].x - 35,
-          monsters[this.index].y + 35,
-          35,
-          35
-          );
-       };
-   };
-
-  return this;
-
-};
 function spriteObject (options) {
   baseObject.call(this);         
   this.frameIndex = 0;
@@ -93,6 +55,44 @@ function spriteObject (options) {
   return this;
 }
 
+
+function cursorObject() {
+  spriteObject.call(this, {ticksPerFrame: 0});
+  this.loc = 0;
+  this.index = 0;
+
+  this.render = function () {
+  // Draw the animation
+    if (this.loc == 1) {
+      ctx.drawImage(
+          cursorImage,
+          0,
+          0,
+          35,
+          35,
+          heroes[this.index].x + 75,
+          heroes[this.index].y + 25,
+          35,
+          35
+          )};
+      if (this.loc == 2) {
+        ctx.drawImage(
+          cursor2Image,
+          0,
+          0,
+          35,
+          35,
+          monsters[this.index].x - 35,
+          monsters[this.index].y + 35,
+          35,
+          35
+          );
+       };
+   };
+
+  return this;
+
+};
 function unitObject(unitImage) {
   spriteObject.call(this, {
     ticksPerFrame: 16,
@@ -226,3 +226,14 @@ function fightExecutor(){
     
     
 }
+
+spriteObject.prototype = Object.create(baseObject.prototype);
+spriteObject.prototype.constructor = spriteObject;
+unitObject.prototype = Object.create(spriteObject.prototype);
+unitObject.prototype.constructor = unitObject;
+heroObject.prototype = Object.create(unitObject.prototype);
+heroObject.prototype.constructor = heroObject;
+monsterObject.prototype = Object.create(unitObject.prototype);
+monsterObject.prototype.constructor = monsterObject;
+cursorObject.prototype = Object.create(spriteObject.prototype);
+cursorObject.prototype.constructor = cursorObject;
