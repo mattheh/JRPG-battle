@@ -282,7 +282,7 @@ function randomAttack(attack){
 
 function resetRound(){
     turnIndex = 0;
-    heroes[turnIndex].x = heroes[turnIndex].x + 75;
+    //heroes[turnIndex].x = heroes[turnIndex].x + 75;
     for(var i=0;i<heroClasses.length;i++){  
       delete heroes[i].target;
     }
@@ -354,16 +354,13 @@ var updateGame = function (modifier) {
         if (turnIndex < heroes.length){
 
           if (typeof heroes[turnIndex].target === 'undefined') {
-            heroes[turnIndex].state = "stepForward"
+            heroes[turnIndex].state = "walking"
           } else {
-            heroes[turnIndex].state = "stepBack"
+            heroes[turnIndex].state = "idle"
           };
         };
         for (var i = 0; i < heroes.length; i++){
-          heroes[i].update();
-          if (heroes[i].health <= 0) {
-
-          }
+          heroes[i].updateState();
         }
         for (var i = 0; i < monsters.length; i++){
           monsters[i].update();
@@ -403,7 +400,7 @@ function renderGame () {
         }
     
         for (var i = 0; i < heroes.length; i++){
-          heroes[i].animate(heroes[i].state);
+          heroes[i].animate();
         }
         heroes[2].animate();
         for (var i = 0; i < monsters.length; i++){

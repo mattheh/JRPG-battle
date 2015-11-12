@@ -105,7 +105,8 @@ function unitObject(unitImage) {
     resize_y: 75
   });
     
-          
+  this.updateState = function () {        
+    this.update();
     //character state
       var lastState = this.state;
       if(this.currentHealth <= 0){
@@ -114,10 +115,11 @@ function unitObject(unitImage) {
       }
       else if(this.currentHealth < this.totalHealth*0.4)
           this.state = "weak";
-      if(lastState != this.state && this.charType == "hero"){//monsters don't have another imgs
-          this.image = new Image();
-          this.image.src = imgPath + "heroes/" + this.class + "_" + this.state + imgExtension;
-      }
+      //if(lastState != this.state && this.charType == "hero"){//monsters don't have another imgs
+      //    this.image = new Image();
+      //    this.image.src = imgPath + "heroes/" + this.class + "_" + this.state + imgExtension;
+      //}
+  }
     
   this.renderHealth = function () {
     this.render();
@@ -168,25 +170,28 @@ function heroObject(heroClass) {
 
   heroImage.src = imgPath + "heroes/" + heroClass.class + "_" + this.state + imgExtension;
   
-  this.animate = function (action) {
+  this.animate = function () {
     this.renderHealth();
-    switch (action) { 
-      case "stepForward":
-        this.image.src = imgPath + "heroes/" + this.class + "_walking.png"
+    this.image.src = imgPath + "heroes/" + this.class + "_" + this.state + imgExtension;
+    switch (this.state) { 
+      case "walking":
         this.numberOfFrames = 2;
         this.width = 58;
-        if (this.x <=75) {
-          this.x += 3;
-        }
+        //if (this.x <=75) {
+        //  this.x += 3;
+        //}
         break;
-      case "stepBack":
-        if (this.x >= 20) {
-          this.x -= 3;
-        } else {
-          this.image.src = imgPath + "heroes/" + this.class + "_idle.png"
+      case "idle":
           this.numberOfFrames = 1;
           this.width = 32;
-        }
+        break;
+      case "weak":
+          this.numberOfFrames = 1;
+          this.width = 32;
+        break;
+      case "dead":
+          this.numberOfFrames = 1;
+          this.width = 32;
         break;
 
     };
