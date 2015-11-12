@@ -403,13 +403,10 @@ function renderGame () {
         }
     
         for (var i = 0; i < heroes.length; i++){
-          heroes[i].render();
-          heroes[i].renderHealth();
           heroes[i].animate(heroes[i].state);
         }
         heroes[2].animate();
         for (var i = 0; i < monsters.length; i++){
-          monsters[i].render();
           monsters[i].renderHealth();
         }
 

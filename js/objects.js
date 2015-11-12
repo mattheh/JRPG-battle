@@ -120,6 +120,7 @@ function unitObject(unitImage) {
       }
     
   this.renderHealth = function () {
+    this.render();
       /** health bar */
       var centerX = this.x + (this.resize_x)/2;
       var hpTextWidth = 60;
@@ -168,6 +169,7 @@ function heroObject(heroClass) {
   heroImage.src = imgPath + "heroes/" + heroClass.class + "_" + this.state + imgExtension;
   
   this.animate = function (action) {
+    this.renderHealth();
     switch (action) { 
       case "stepForward":
         this.image.src = imgPath + "heroes/" + this.class + "_walking.png"
